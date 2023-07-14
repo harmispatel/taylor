@@ -23,7 +23,7 @@ use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\CouponUsage;
 use App\Models\Product;
-use App\Models\Shop;
+use App\Models\{Shop,ModelLike};
 use App\Utility\SendSMSUtility;
 use App\Utility\NotificationUtility;
 use Carbon\Carbon;
@@ -1262,6 +1262,19 @@ if (!function_exists('appointments_expire')) {
         }
 
         return;
+    }
+}
+// Get modellike seller vise
+if (!function_exists('getModelLikeSellervise')) {
+    function getModelLikeSellervise($modelId,$userId)
+    {
+        $modelLikeDetails=ModelLike::where('model_id',$modelId)->where('user_id',$userId)->first();
+        $like='';
+        $isLike=isset($modelLikeDetails->is_like) ? $modelLikeDetails->is_like : '';
+        if($isLike==1){
+            $like='active';
+        }
+        return $like;
     }
 }
 

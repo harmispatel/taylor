@@ -326,7 +326,7 @@ class HomeController extends Controller
             $email = $appointment->user->email ?? '';
 
             // dd($email);
-        
+
             $content = "Hello, $name! This is Paypal Payment Link to Pay Commission to Measurer. " .$payment_url;
 
              Mail::send([], [], function ($message) use ($email, $content) {
@@ -340,7 +340,7 @@ class HomeController extends Controller
             $appointmentStatus = 5;
             $msg = 'You have rejected appointment successfully';
         }
-     
+
         if($appointment->count() > 0) {
             $appointment->update([
                 'appointment_status' => $appointmentStatus,
@@ -366,7 +366,7 @@ class HomeController extends Controller
                 'appointment_status' => 6,
             ]);
 
-        
+
             // dd($send_mail);
 
             // return redirect()->route('payment.checkout')->with('success_message', 'Mark Completed Successfully');
@@ -1616,8 +1616,7 @@ class HomeController extends Controller
 
     public function model_list()
     {
-        $models = User::where('user_type', 'model')->paginate();
-        // dd($models->AvatarImage);
+        $models = User::with('avatarImage')->where('user_type', 'model')->paginate();
         return view('seller.model.model-list',compact('models'));
     }
 
@@ -1631,9 +1630,9 @@ class HomeController extends Controller
 
     public function model_conversations_create($model_id)
     {
-   
+
         $model_id = decrypt($model_id);
-     
+
         if (Auth::check()) {
             $model = User::findOrFail($model_id);
             // dd($model);
@@ -1725,17 +1724,17 @@ class HomeController extends Controller
     public function model_appointment_create(Request $request)
     {
 
-     
+
 
     //    $validated = $request->validate([
     //         'model_commission' => ['required', 'integer'],
     //         'seller_id' => ['required', 'integer'],
-    //         'model_id' => ['required', 'integer'], 
+    //         'model_id' => ['required', 'integer'],
     //         'appointment_datetime' => ['required', 'integer'],
     //     ]);
 
-     
-      
+
+
         $tmpcommission = TemporaryModelCommission::where([
             ['seller_id', '=', $request->seller_id],
             ['model_id', '=', $request->model_id]
@@ -1746,7 +1745,7 @@ class HomeController extends Controller
 
         return redirect()->route('seller.requests_to_be_model');
 
-      
+
         # code...
     }
 
@@ -1796,7 +1795,7 @@ class HomeController extends Controller
         $measurment = RequestMeasurement::findOrFail(decrypt($measurment_id));
         $measurer_id = $measurment->appointment->measurer_id;
         if($status == 0){
-            
+
             $wallet = new Wallet;
             $wallet->user_id = $measurer_id;
             $wallet->amount = $measurment->appointment->measurer_commission;
@@ -1821,7 +1820,7 @@ class HomeController extends Controller
     public function nearby_models(Request $request) {
 
         $user1 = Address::find($request->address_id);
-     
+
         $user2 = Address::where('user_id',Auth::id())->first();
         // dd($user2);
         $earthRadiusKm = 6371; // Approximate radius of the earth in km
@@ -1838,14 +1837,14 @@ class HomeController extends Controller
         $c = 2 * atan2(sqrt($a), sqrt(1-$a));
 
         $distance = $earthRadiusKm * $c;
-    
-      
+
+
         $data['distance'] =   $distance;
         $data['user_name'] =   $user1->user->name;
 
 
         // dd($data);
          return response()->json($data);
-    
+
         }
 }

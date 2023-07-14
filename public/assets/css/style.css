@@ -22,12 +22,17 @@
 .product_box .card-body .product_box_btn_group a{
     padding: 10px 15px;
     font-size: 14px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .product_box .card-body .product_box_btn_group a:nth-of-type(3),
 .product_box .card-body .product_box_btn_group a:nth-of-type(4){
     margin: 0;
+}
+
+.product_box .product_img{
+    height: 270px;
+    overflow: hidden;
 }
 
 .product_box .product_short_icon{

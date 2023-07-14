@@ -10,11 +10,19 @@
 </div>
 
 <div class="row">
+    @php
+        $i=1;
+    @endphp
     @foreach ($models as $model)
+        @php
+            $likeClass=getModelLikeSellervise($model->id,auth()->user()->id);
+        @endphp
     <div class="col-sm-6 col-md-4  col-xxl-3">
         <div class="card product_box">
             <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                <img src="{{ @$model->avatarImage->file_name ? url('/public').'/'.@$model->avatarImage->file_name : url('/public').'/assets/img/avatar-place.png' }}" class="img-fluid w-100" />
+                <div class="product_img">
+                    <img src="{{ @$model->avatarImage->file_name ? url('/public').'/'.@$model->avatarImage->file_name : url('/public').'/assets/img/avatar-place.png' }}" class="img-fluid w-100" />
+                </div>
                 <a href="#!">
                     <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                 </a>
@@ -22,14 +30,14 @@
             <div class="card-body">
                 <h5 class="card-title">{{@$model->name}}</h5>
                 <div class="product_box_btn_group">
-                    <a href="{{ route('seller.single_model_gallery',@$model->id)}}" class="btn btn-dark">See Images</a>
-                    <a href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$model->id) ])}}" class="btn btn-primary">Hire Model</a>
-                    <a href="#" class="btn btn-success">#{{@$model->id}}</a>
-                    <a href="#" class="btn btn-warning">{{translate('Albums')}}</a>
+                    <a title="See Images" href="{{ route('seller.single_model_gallery',@$model->id)}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
+                    <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$model->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
+                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$model->id}}</a>
+                    <a title="Albums" href="#" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">
-                <a id="green" class="like">
+                <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#myModal">
@@ -71,6 +79,9 @@
             </div>
         </div>
     </div>
+    @php
+    $i++;
+    @endphp
     @endforeach
 
 </div>

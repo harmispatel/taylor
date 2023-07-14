@@ -35,7 +35,23 @@ class ModelLikeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $input=$request->all();
+            $modelLikeDetails=ModelLike::where('model_id',$request->model_id)->where('user_id',auth()->user()->id)->first();
+            $input['user_id']=auth()->user()->id;
+            if(!empty($modelLikeDetails)){
+                $modelLikeDetails->update($input);
+            }else{
+                ModelLike::create($input);
+            }
+            $data['success']=1;
+            json_encode($data);
+        }catch (\Exception $e) {
+            $data['success']=0;
+            json_encode($data);
+        }
+
+
     }
 
     /**

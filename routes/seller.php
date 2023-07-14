@@ -20,7 +20,7 @@ use App\Http\Controllers\Seller\ConversationController;
 use App\Http\Controllers\Seller\NotificationController;
 use App\Http\Controllers\Seller\SupportTicketController;
 use App\Http\Controllers\Seller\SellerRequestController;
-use App\Http\Controllers\{MeasurerController,ModelCommentController};
+use App\Http\Controllers\{MeasurerController,ModelCommentController,ModelLikeController};
 use App\Http\Controllers\ProductForumController;
 
 
@@ -202,10 +202,13 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
 
     Route::get('seller/nearbyMeasurers/customer/{id}', [HomeController::class, 'nearby_models'])->name('requests.nearby_models');
 
-    // Money Withdraw Requests
+    // Model Comment Routes
     Route::controller(ModelCommentController::class)->group(function () {
        Route::post('addcomment','store')->name('add.comment');
     });
+    Route::controller(ModelLikeController::class)->group(function () {
+        Route::post('modelLike','store')->name('like.model');
+     });
 
 });
 
