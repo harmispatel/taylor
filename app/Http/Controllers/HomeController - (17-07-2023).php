@@ -47,10 +47,9 @@ use App\Models\Address;
 use App\Models\CombinedOrder;
 use App\Models\MeasurerAvailablityHours;
 use App\Models\OrderDetail;
-use App\Models\{ProductForum,ModelDetail};
+use App\Models\ProductForum;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Crypt;
 
 
 class HomeController extends Controller
@@ -1598,81 +1597,33 @@ class HomeController extends Controller
     public function model_gallery()
     {
         $imagesId = ModelImage::where('model_id',auth()->id())->pluck('uploaded_image_id'); // get images id
-        // $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name')->paginate(3); // get images path
-        $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
+        $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name'); // get images path
         return view('frontend.user.model.model-gallery',compact('imagesPath'));
     }
 
     public function model_upload_image(Request $request)
     {
-
-        $input=$request->except('_token','photo');
         $validator =    $request->validate([
             'photo' => ['required']
         ]);
-        $json_data=json_encode($request['catogory_id']);
-        $input['catogory_id']=$json_data;
-        $input['user_id']=auth()->id();
-
-        // insert in model details
-        //ModelDetail::insert($input);
 
         $model_image = new ModelImage;
         $model_image->model_id = auth()->id();
         $model_image->uploaded_image_id = $request->photo;
         $model_image->save();
-       // flash(translate('Model details added successfully'))->success();
         return redirect()->back();
-    }
-    public function store_model_details(Request $request){
-        $input=$request->except('_token');
-        $input['user_id']=auth()->id();
-        ModelDetail::insert($input);
-        flash(translate('Model details added successfully'))->success();
-        return redirect()->back();
-    }
-    public function view_model_details($id){
-        $id=Crypt::decrypt($id);
-        $modelDetails=ModelDetail::where('upload_id',$id)->paginate(5);
-        return view('seller.model.model-detail',compact('modelDetails'));
-
-    }
-    public function delete_model_picture($id){
-
-        try{
-            $id=Crypt::decrypt($id);
-            $picture=Upload::find($id);
-            if($picture){
-                $modelDetails=ModelDetail::where('upload_id',$id)->get();
-                if($modelDetails){
-                    $modelDetails->delete();
-                }
-                $picture->delete();
-                flash(translate('Post Deleted Successfully'))->success();
-            }
-            else{
-                flash(translate('No Data Found for Delete This record'))->error();
-            }
-            return redirect()->back();
-
-        }catch (\Exception $e) {
-           //$e->getMessage();
-            flash(translate('Something Went Wrong !'))->error();
-            return redirect()->back();
-        }
-
     }
 
     public function model_list()
     {
-        $models = User::with('avatarImage')->where('user_type', 'model')->paginate(5);
+        $models = User::with('avatarImage')->where('user_type', 'model')->paginate();
         return view('seller.model.model-list',compact('models'));
     }
 
     public function single_model_gallery($id)
     {
         $imagesId = ModelImage::where('model_id',$id)->pluck('uploaded_image_id'); // get images id
-        $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
+        $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name'); // get images path
 
         return view('seller.model.single-model-gallery',compact('imagesPath'));
     }

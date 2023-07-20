@@ -176,6 +176,7 @@ class AizUploadController extends Controller
 
     public function get_uploaded_files(Request $request)
     {
+
         $uploads = Upload::where('user_id', Auth::user()->id);
         if ($request->search != null) {
             $uploads->where('file_original_name', 'like', '%'.$request->search.'%');

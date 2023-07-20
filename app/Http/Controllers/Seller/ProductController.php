@@ -43,6 +43,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+
         $search = null;
         $products = Product::where('user_id', Auth::user()->id)->where('digital', 0)->orderBy('created_at', 'desc');
         if ($request->has('search')) {
@@ -84,7 +85,7 @@ class ProductController extends Controller
     {
 
         // dd($request->all());
-        
+
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check()) {
                 flash(translate('Please upgrade your package.'))->warning();
@@ -96,7 +97,7 @@ class ProductController extends Controller
             '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
         ]));
         $request->merge(['product_id' => $product->id]);
-        
+
         //VAT & Tax
         if($request->tax_id) {
             $this->productTaxService->store($request->only([
@@ -155,7 +156,7 @@ class ProductController extends Controller
         //Product
         if($request->is_personalise == null)
             $request->merge(['is_personalise' => 0]);
-        
+
         // dd($request->all());
         $product = $this->productService->update($request->except([
             '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'

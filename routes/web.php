@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\RequestController;
+use App\Http\Controllers\{RequestController,ModelAlbumsController};
 
 /*
   |--------------------------------------------------------------------------
@@ -294,13 +294,22 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::get('measurer/availablity', [HomeController::class, 'measurer_availablity'])->name('measurer.availablity');
         Route::post('measurer/availablity/store', [HomeController::class, 'measurer_availablity_save'])->name('measurer.availablity.save');
         Route::get('model-gallery', [HomeController::class, 'model_gallery'])->name('model_gallery');
+        Route::get('delete_model_picture/{id}', [HomeController::class, 'delete_model_picture'])->name('delete_model_picture');
         Route::post('model_upload_image', [HomeController::class, 'model_upload_image'])->name('model_upload_image');
+        Route::post('store_model_details', [HomeController::class, 'store_model_details'])->name('store_model_details');
         Route::post('set_model_commission', [HomeController::class, 'set_model_commission'])->name('set_model_commission');
         Route::get('appointment_for_modeling', [HomeController::class, 'appointment_for_modeling'])->name('appointment_for_modeling');
         Route::get('update_request_model_status/{request}/{status}', [HomeController::class, 'update_request_model_status'])->name('update_request_model_status');
         Route::post('temporary_model_commission_store', [HomeController::class, 'temporary_model_commission_store'])->name('temporary_model_commission_store');
         Route::get('reject_measurment/{measurment_id}/{status}', [HomeController::class, 'reject_measurment'])->name('reject_measurment');
 
+    });
+    Route::controller(ModelAlbumsController::class)->group(function () {
+
+        Route::get('/model-albums', 'index')->name('model-albums');
+        Route::post('/store-albums', 'store')->name('store-albums');
+        Route::post('/getAlbumDetails', 'getAlbumDetails')->name('getAlbumDetails');
+        Route::get('/delete-albums/{id}', 'destroy')->name('delete-albums');
     });
 
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
@@ -490,6 +499,7 @@ Route::controller(RequestController::class)->group(function () {
 
     Route::post('/add-request-to-personaliser', 'add_request_to_personaliser')->name('request.add_request_to_personaliser');
 });
+
 
 
 Route::controller(DefaultMeasurerCommissionController::class)->group(function () {

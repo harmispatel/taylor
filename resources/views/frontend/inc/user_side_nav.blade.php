@@ -197,7 +197,7 @@
                         </li>
                     @endif
 
-                    @if (get_setting('conversation_system') == 1)
+                    @if(get_setting('conversation_system') == 1)
                         @php
                             $conversation = \App\Models\Conversation::where('sender_id', Auth::user()->id)->where('sender_viewed', 0)->get();
                             $conversations_id = \App\Models\Conversation::where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id)->pluck('id');
@@ -310,6 +310,12 @@
                     <a href="{{ route('model_gallery') }}" class="aiz-side-nav-link {{ areActiveRoutes(['model_gallery'])}}">
                         <i class="las la-dollar-sign aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{translate('Model Gallery')}}</span>
+                    </a>
+                </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('model-albums') }}" class="aiz-side-nav-link {{ areActiveRoutes(['areActiveRoutes'])}}">
+                        <i class="las la-dollar-sign aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{translate('Model Albums')}}</span>
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">

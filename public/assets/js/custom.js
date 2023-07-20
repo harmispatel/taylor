@@ -23,9 +23,9 @@ function giveLike(randomNumber,id){
         success: function (data) {
         },
         error: function (data) {
-            console.log(data);
         }
     });
 
 }
+
 

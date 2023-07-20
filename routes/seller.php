@@ -193,6 +193,7 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
 
     Route::get('model_list', [HomeController::class, 'model_list'])->name('model_list');
     Route::get('single_model_gallery/{id}', [HomeController::class, 'single_model_gallery'])->name('single_model_gallery');
+    Route::get('view_model_details/{id}', [HomeController::class, 'view_model_details'])->name('view_model_details');
     Route::get('model_conversations_create/{model_id}', [HomeController::class, 'model_conversations_create'])->name('model_conversations_create');
     Route::post('model_conversations_create-post/{model_id}', [HomeController::class, 'model_conversations_create'])->name('model_conversations_create_post');
 
