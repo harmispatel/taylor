@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="product_short_icon">
-                <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}})">
+                <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}},{{@$model->avatarImage->id}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#myModal">
@@ -57,8 +57,10 @@
                         <!-- Modal body -->
                         <form method="POST" action="{{route('seller.add.comment')}}">
                             @csrf
+
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
                             <input type="hidden" name="model_id" value="{{isset($model->id) ? $model->id :''}}">
+                            <input type="hidden" name="upload_id" value="{{isset($model->avatarImage->id) ? $model->avatarImage->id :''}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">

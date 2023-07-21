@@ -35,13 +35,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group mb-0 text-right">
+                <div class="form-group mb-0 text-right mb-3">
                     <button type="submit" class="btn btn-primary">{{ translate('Upload Image') }}</button>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">{{ translate('Video') }}</label>
+                    <div class="col-md-10">
+                        <div class="input-group" data-toggle="aizuploader" data-type="video">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse') }}
+                                </div>
+                            </div>
+                            <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <input type="hidden" name="photo" class="selected-files" required>
+                        </div>
+                        <div class="file-preview box sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-0 text-right mb-3">
+                    <button type="submit" class="btn btn-primary">{{ translate('Upload Video') }}</button>
                 </div>
 
             </form>
 
-            <br>
 
           <form action="{{route('set_model_commission') }}" method="POST">
             @csrf
@@ -54,7 +71,7 @@
             </div>
 
             <div class="form-group row mb-0">
-                <div class="col-12 text-right">
+                <div class="col-12 text-right mb-3">
                     <button type="submit" class="btn btn-primary">{{ translate('Set Commission') }}</button>
                 </div>
             </div>
@@ -62,15 +79,21 @@
 
         </div>
     </div>
-    <br>
+
 
     <div class="row">
         @foreach ($imagesPath as $imagePath)
             <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                 <div class="modal_box">
-                    <div class="modal_img">
-                        <img src="{{ url('/public') . '/' . $imagePath->file_name }}" class="w-100 shadow-1-strong rounded mb-4"
+                    <div class="modal_img video_box">
+                        @if(@$imagePath->type=='video')
+                            <video class="w-100" controls>
+                                <source src="{{ url('/public') . '/' . $imagePath->file_name }}" type="video/mp4">
+                            </video>
+                        @else
+                            <img src="{{ url('/public') . '/' . $imagePath->file_name }}" class="w-100 shadow-1-strong rounded mb-4"
                             alt="Boat on Calm Water" />
+                        @endif
                     </div>
                     <a href="#" data-href="{{route('delete_model_picture',Crypt::encrypt($imagePath->id))}}" class="btn btn-danger dt_btn  confirm-delete"><i class="fa-solid fa-trash"></i></a>
                     <button  data-toggle="modal" onclick="openDetailsModel({{isset($imagePath->id) ? $imagePath->id : ''}})" class="btn btn-success add_btn">Add</button>
@@ -101,7 +124,7 @@
                                     <label>{{ translate('Product Category')}}</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select class="form-control aiz-selectpicker mb-3" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  name="category_id" required>
+                                    <select class="form-control aiz-selectpicker mb-3" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  id="category_id" name="category_id" onchange="getBodySize(this.value)" required>
                                         <option value="">{{ translate('Select Category') }}</option>
                                         <option value="1">{{ translate('Clothing') }}</option>
                                         <option value="2">{{ translate('Shoes') }}</option>
@@ -116,27 +139,12 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row cloth"  style="display:none;">
                                 <div class="col-md-2">
                                     <label>{{ translate('Size')}}</label>
                                 </div>
-                                <div class="col-md-10">
-                                    <select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>
-                                        <option value="">{{ translate('Select Size') }}</option>
+                                <div class="col-md-10 category_select_box">
 
-                                        <option value="1">{{ translate('XXS(Int) /32 (EU) /4 (UK) /0 (US)') }}</option>
-                                        <option value="2">{{ translate('XS(Int) /34 (EU) /6 (UK) /2 (US)') }}</option>
-                                        <option value="3">{{ translate('S(Int) /36 (EU) /8 (UK) /4 (US)') }}</option>
-                                        <option value="4">{{ translate('M(Int) /38 (EU) /10 (UK) /6 (US)') }}</option>
-                                        <option value="5">{{ translate('L(Int) /40 (EU) /12 (UK) /8 (US)') }}</option>
-                                        <option value="6">{{ translate('XL(Int) /42 (EU) /14 (UK) /10 (US)') }}</option>
-                                        <option value="7">{{ translate('XXL(Int) /44 (EU)/16 (UK)/12 (US)') }}</option>
-                                        <option value="8">{{ translate('3XL(Int) /46 (EU) /18 (UK) /14 (US)') }}</option>
-                                        <option value="9">{{ translate('4XL(Int) /48 (EU) /20 (UK) /16 (US)') }}</option>
-                                        <option value="10">{{ translate('5XL(Int) /50 (EU) /22 (UK) /18 (US)') }}</option>
-                                        <option value="11">{{ translate('6XL(Int) /52 (EU) /24 (UK) /20 (US)') }}</option>
-                                        <option value="12">{{ translate('7XL(Int) /54 (EU) /26 (UK) /22 (US)') }}</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="row">
@@ -223,6 +231,62 @@
         function openDetailsModel(uploadId){
             $('#upload_id').val(uploadId);
             $('#detail-modal').modal('show');
+        }
+        function getBodySize(categoryId){
+
+            if(categoryId==1){
+                var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
+                '<option value="1">{{ translate('XXS(Int) /32 (EU) /4 (UK) /0 (US)') }}</option>'
+                    +'<option value="2">{{ translate('XS(Int) /34 (EU) /6 (UK) /2 (US)') }}</option>'
+                    +'<option value="3">{{ translate('S(Int) /36 (EU) /8 (UK) /4 (US)') }}</option>'
+                    +'<option value="4">{{ translate('M(Int) /38 (EU) /10 (UK) /6 (US)') }}</option>'
+                    +'<option value="5">{{ translate('L(Int) /40 (EU) /12 (UK) /8 (US)') }}</option>'
+                    +'<option value="6">{{ translate('XL(Int) /42 (EU) /14 (UK) /10 (US)') }}</option>'
+                    +'<option value="7">{{ translate('XXL(Int) /44 (EU)/16 (UK)/12 (US)') }}</option>'
+                    +'<option value="8">{{ translate('3XL(Int) /46 (EU) /18 (UK) /14 (US)') }}</option>'
+                    +'<option value="9">{{ translate('4XL(Int) /48 (EU) /20 (UK) /16 (US)') }}</option>'
+                    +'<option value="10">{{ translate('5XL(Int) /50 (EU) /22 (UK) /18 (US)') }}</option>'
+                    +'<option value="11">{{ translate('6XL(Int) /52 (EU) /24 (UK) /20 (US)') }}</option>'
+                    +'<option value="12">{{ translate('7XL(Int) /54 (EU) /26 (UK) /22 (US)') }}</option>'
+                    +'</select>';
+                    $('.cloth').show();
+                    $('.category_select_box').html(html);
+            }
+            else if(categoryId==2){
+
+                var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
+                '<option value="1">{{ translate('36 /36 (EU) /3.5 (UK) /6 (US) /4.5 (AU)') }}</option>'
+                +'<option value="2">{{ translate('37 /37 (EU) /4 (UK) / 6.5(US) /5 (AU)') }}</option>'
+                +'<option value="3">{{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
+                +'<option value="4">{{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
+                +'<option value="5">{{ translate('40 /40 (EU) /6.5 (UK) / 9(US) /7.5 (AU)') }}</option>'
+                +'<option value="6">{{ translate('41 /41 (EU) /7 (UK) / 9.5(US) /8 (AU)') }}</option>'
+                +'<option value="7">{{ translate('42 /42 (EU) /7.5 (UK) / 10(US) /8.5 (AU)') }}</option>'
+                +'<option value="8">{{ translate('43 /43 (EU) /8(UK) / 10.5(US) /9(AU)') }}</option>'
+                +'</select>';
+                $('.cloth').show();
+                $('.category_select_box').html(html);
+            }
+            else if(categoryId==7){
+                var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
+                '<option value="1">{{ translate('10 25cm') }}</option>'
+                +'<option value="2">{{ translate('12 30cm') }}</option>'
+                +'<option value="3">{{ translate('14 35cm') }}</option>'
+                +'<option value="4">{{ translate('16 40cm') }}</option>'
+                +'<option value="5">{{ translate('18 45cm') }}</option>'
+                +'<option value="6">{{ translate('20 50cm') }}</option>'
+                +'<option value="7">{{ translate('22 55cm') }}</option>'
+                +'<option value="8">{{ translate('24 60cm') }}</option>'
+                +'<option value="9">{{ translate('26 65cm') }}</option>'
+                +'<option value="10">{{ translate('28 70cm') }}</option>'
+                +'</select>';
+                $('.cloth').show();
+                $('.category_select_box').html(html);
+            }
+            else{
+                $('.cloth').hide();
+            }
+
         }
     </script>
 

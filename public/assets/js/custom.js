@@ -1,7 +1,7 @@
 
 // LIKE DISLIKE FUNCTIONALITY
 
-function giveLike(randomNumber,id){
+function giveLike(randomNumber,id,upload_id){
     if ($('.like'+randomNumber).hasClass("active")) {
         $('.like'+randomNumber).removeClass("active");
         var isLike=0;
@@ -18,7 +18,7 @@ function giveLike(randomNumber,id){
     $.ajax({
         type: "POST",
         url: "modelLike",
-        data: {"model_id":id,"is_like":isLike},
+        data: {"model_id":id,"is_like":isLike,"upload_id":upload_id},
         dataType: 'json',
         success: function (data) {
         },

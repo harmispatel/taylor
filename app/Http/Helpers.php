@@ -1277,6 +1277,19 @@ if (!function_exists('getModelLikeSellervise')) {
         return $like;
     }
 }
+// Get modellike seller vise
+if (!function_exists('getModelLikePostWise')) {
+    function getModelLikePostWise($uploadId,$userId)
+    {
+        $modelLikeDetails=ModelLike::where('upload_id',$uploadId)->where('user_id',$userId)->first();
+        $like='';
+        $isLike=isset($modelLikeDetails->is_like) ? $modelLikeDetails->is_like : '';
+        if($isLike==1){
+            $like='active';
+        }
+        return $like;
+    }
+}
 
 
 

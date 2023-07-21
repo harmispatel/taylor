@@ -1,6 +1,7 @@
 .product_box{
     position: relative;
     /* overflow: hidden; */
+    background-color: #fff;
 }
 
 .product_box:hover{
@@ -37,8 +38,8 @@
 
 .product_box .product_short_icon{
     position: absolute;
-    top: 0;
-    right: -100%;
+    top: 10px;
+    right:0;
     transition: 0.5s all ease-in-out;
     display: flex;
     flex-direction: column;
@@ -47,7 +48,6 @@
 
 .product_box:hover .product_short_icon{
     right: 10px;
-    top: 10px;
     opacity: 1;
 }
 
@@ -90,6 +90,11 @@
     margin-top: 30px;
 }
 
+.product_box .modal_box{
+    box-shadow: none;
+    padding: 0;
+}
+
 .modal_box {
     background-color: #fff;
     position: relative;
@@ -97,6 +102,7 @@
     box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
     border-radius: 10px;
     overflow: hidden;
+    height: 100%;
 }
 
 .modal_box .add_btn {
@@ -129,4 +135,10 @@
     color: #fff !important;
     padding: 5px !important;
     border-radius: 50% !important;
+}
+
+.video_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

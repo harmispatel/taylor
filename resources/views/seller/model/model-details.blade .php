@@ -23,6 +23,7 @@
                     <tbody>
                         @php $i=1; @endphp
                         @foreach ($modelDetails as $key => $value)
+
                             <tr>
                                 <td>{{$i}}</td>
                                 <td>
@@ -68,6 +69,46 @@
                                             {{ translate('3XL(Int) /46 (EU) /18 (UK) /14 (US)') }}
                                         @elseif($value->model_size == 9)
                                             {{ translate('4XL(Int) /48 (EU) /20 (UK) /16 (US)') }}
+                                    @elseif($value->category_id == 2)
+                                        @if($value->model_size == 1)
+                                            {{ translate('36 /36 (EU) /3.5 (UK) /6 (US) /4.5 (AU)') }}
+                                        @elseif($value->model_size == 2)
+                                            {{ translate('37 /37 (EU) /4 (UK) / 6.5(US) /5 (AU)') }}
+                                        @elseif($value->model_size == 3)
+                                            {{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}
+                                        @elseif($value->model_size == 4)
+                                            {{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}
+                                        @elseif($value->model_size == 5)
+                                            {{ translate('40 /40 (EU) /6.5 (UK) / 9(US) /7.5 (AU)') }}
+                                        @elseif($value->model_size == 6)
+                                            {{ translate('41 /41 (EU) /7 (UK) / 9.5(US) /8 (AU)') }}
+                                        @elseif($value->model_size == 7)
+                                            {{ translate('42 /42 (EU) /7.5 (UK) / 10(US) /8.5 (AU)') }}
+                                        @elseif($value->model_size == 8)
+                                        {{ translate('43 /43 (EU) /8(UK) / 10.5(US) /9(AU)') }}
+                                    @elseif($value->category_id == 7)
+                                        @if($value->model_size == 1)
+                                            {{ translate('10 25cm') }}
+                                        @elseif($value->model_size == 2)
+                                            {{ translate('12 30cm') }}
+                                        @elseif($value->model_size == 3)
+                                            {{ translate('14 35cm') }}
+                                        @elseif($value->model_size == 4)
+                                            {{ translate('16 40cm') }}
+                                        @elseif($value->model_size == 5)
+                                            {{ translate('18 45cm') }}
+                                        @elseif($value->model_size == 6)
+                                            {{ translate('20 50cm') }}
+                                        @elseif($value->model_size == 7)
+                                            {{ translate('22 55cm') }}
+                                        @elseif($value->model_size == 8)
+                                            {{ translate('24 60cm') }}
+                                        @elseif($value->model_size == 9)
+                                            {{ translate('26 65cm') }}
+                                        @elseif($value->model_size == 10)
+                                            {{ translate('28 70cm') }}
+
+
                                     @endif
                                 </td>
                                 <td>{{$value->purchase_link}}</td>

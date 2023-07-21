@@ -101,10 +101,7 @@ class HomeController extends Controller
         ->where('user_id',Auth::user()->id)
         ->whereNotIn('appointment_status', [6])
         ->get();
-
         appointments_expire();
-
-
         return view('frontend.user.customer.direct-request-appointments', compact('appointments'));
     }
 
