@@ -7,8 +7,6 @@
 .product_box:hover{
     cursor: pointer;
 }
-
-
 .product_box .card-body{
     padding: 20px;
 }
