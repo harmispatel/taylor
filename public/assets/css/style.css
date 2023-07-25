@@ -66,7 +66,7 @@
 .product_box .product_short_icon a:last-child{
     margin-bottom: 0;
 }
-.active{
+.product_short_icon .active{
     color: green !important;
     background-color: #fff !important;
 }

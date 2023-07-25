@@ -310,6 +310,7 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('/store-albums', 'store')->name('store-albums');
         Route::post('/getAlbumDetails', 'getAlbumDetails')->name('getAlbumDetails');
         Route::get('/delete-albums/{id}', 'destroy')->name('delete-albums');
+        Route::get('/view-albums/{id}', 'show')->name('view-albums');
     });
 
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');

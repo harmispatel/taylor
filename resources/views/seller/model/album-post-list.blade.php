@@ -70,7 +70,7 @@
                     <a title="View Details" href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
                     <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->id}}</a>
-                    <a title="Albums" href="{{route('seller.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
+                    <a title="Albums" href="#" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">

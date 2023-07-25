@@ -1,4 +1,4 @@
-@extends('frontend.layouts.user_panel')
+@extends('seller.layouts.app')
 
 @section('panel_content')
     <div class="text-right mb-3">
@@ -27,9 +27,7 @@
                                 <td>{{$value->name}}</td>
                                 <td>{{($value->is_public==1) ? translate('Public') : translate('Private') }}</td>
                                 <td class="text-right">
-                                <a href="{{route('view-albums',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Details')}}"><i class="las la-eye"></i></a>
-                                <button onclick="openAlbumsModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="Edit"><i class="las la-edit"></i></button>
-                                <a href="#" data-href="{{route('delete-albums',Crypt::encrypt($value->id))}}"  class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="Delete"><i class="las la-trash"></i></a>
+                                <a href="{{route('seller.album_post_list',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
                                 </td>
 
                             </tr>
@@ -87,57 +85,4 @@
         </div>
     </div>
 
-@endsection
-@section('modal')
-    @include('modals.delete_modal')
-@endsection
-@section('script')
-<script>
-    function openAlbumsModel(albumId){
-
-        if(albumId != 0){
-            $('#albumId').val(albumId);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: "POST",
-                url: "getAlbumDetails",
-                data: {"albumId":albumId},
-                success:function(data) {
-                    if(data.success==1){
-                        $('#is_public option').attr('selected', false);
-                        $('#is_public option[value="' + data.albums.is_public + '"]').attr("selected", "selected");
-                        $('.modal-body #name').val(data.albums.name);
-                    }
-                },
-                error: function(data) {
-
-                }
-            });
-        }
-        $('#albums-modal').modal('show');
-    }
-    function storeAlbumsDetails(){
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.ajax({
-        type: "POST",
-        url: "modelLike",
-        data: {"model_id":id,"is_like":isLike},
-        dataType: 'json',
-        success: function (data) {
-        },
-        error: function (data) {
-        }
-    });
-
-}
-</script>
 @endsection

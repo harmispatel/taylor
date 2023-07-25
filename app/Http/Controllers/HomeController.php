@@ -47,7 +47,7 @@ use App\Models\Address;
 use App\Models\CombinedOrder;
 use App\Models\MeasurerAvailablityHours;
 use App\Models\OrderDetail;
-use App\Models\{ProductForum,ModelDetail};
+use App\Models\{ProductForum,ModelDetail,ModelAlbum};
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
@@ -1594,7 +1594,7 @@ class HomeController extends Controller
 
     public function model_gallery()
     {
-        $imagesId = ModelImage::where('model_id',auth()->id())->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',null)->pluck('uploaded_image_id'); // get images id
         // $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name')->paginate(3); // get images path
         $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
         return view('frontend.user.model.model-gallery',compact('imagesPath'));
@@ -1603,22 +1603,18 @@ class HomeController extends Controller
     public function model_upload_image(Request $request)
     {
 
-        $input=$request->except('_token','photo');
-        $validator =    $request->validate([
-            'photo' => ['required']
-        ]);
-        $json_data=json_encode($request['catogory_id']);
-        $input['catogory_id']=$json_data;
-        $input['user_id']=auth()->id();
+        try{
+            $model_image = new ModelImage;
+            $model_image->model_id = auth()->id();
+            $model_image->album_id = isset($request->album_id) ? $request->album_id : '';
+            $model_image->uploaded_image_id = isset($request->photo) ? $request->photo : $request->video ;
+            $model_image->save();
+            flash(translate('File Uploaded Successfully'))->success();
+        }
+        catch (\Exception $e) {
+            flash(translate('Something Went Wrong !'))->error();
 
-        // insert in model details
-        //ModelDetail::insert($input);
-
-        $model_image = new ModelImage;
-        $model_image->model_id = auth()->id();
-        $model_image->uploaded_image_id = $request->photo;
-        $model_image->save();
-       // flash(translate('Model details added successfully'))->success();
+        }
         return redirect()->back();
     }
     public function store_model_details(Request $request){
@@ -1641,8 +1637,10 @@ class HomeController extends Controller
             $picture=Upload::find($id);
             if($picture){
                 $modelDetails=ModelDetail::where('upload_id',$id)->get();
-                if($modelDetails){
+                if(isset($modelDetails) && count($modelDetails) > 0 ){
+
                     $modelDetails->delete();
+
                 }
                 $picture->delete();
                 flash(translate('Post Deleted Successfully'))->success();
@@ -1653,7 +1651,7 @@ class HomeController extends Controller
             return redirect()->back();
 
         }catch (\Exception $e) {
-           //$e->getMessage();
+           // echo "<pre>"; print_r($e->getMessage());exit;
             flash(translate('Something Went Wrong !'))->error();
             return redirect()->back();
         }
@@ -1665,13 +1663,22 @@ class HomeController extends Controller
         $models = User::with('avatarImage')->where('user_type', 'model')->paginate(5);
         return view('seller.model.model-list',compact('models'));
     }
-
+    public function album_list($model_id){
+        $model_id = decrypt($model_id);
+        $albums=ModelAlbum::latest()->where('model_id',$model_id)->paginate(5);
+        return view('seller.model.albums-list',compact('albums'));
+    }
+    public function album_post_list($album_id){
+        $album_id = decrypt($album_id);
+        $imagesId = ModelImage::where('album_id',$album_id)->pluck('uploaded_image_id'); // get images id
+        $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
+        return view('seller.model.album-post-list',compact('imagesPath'));
+    }
     public function single_model_gallery($id)
     {
-        $imagesId = ModelImage::where('model_id',$id)->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('model_id',$id)->where('album_id',null)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
-
-        return view('seller.model.single-model-gallery',compact('imagesPath'));
+        return view('seller.model.single-model-gallery',compact('imagesPath','id'));
     }
 
     public function model_conversations_create($model_id)

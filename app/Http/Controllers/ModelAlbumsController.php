@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use App\Models\{ModelAlbum};
+use App\Models\{ModelAlbum,AlbumUpload,ModelImage,Upload};
 
 class ModelAlbumsController extends Controller
 {
@@ -80,7 +80,11 @@ class ModelAlbumsController extends Controller
      */
     public function show($id)
     {
-        //
+        $id=Crypt::decrypt($id);
+        $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',$id)->pluck('uploaded_image_id');
+        $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
+
+        return view('frontend.user.model.album-post',compact('imagesPath','id'));
     }
 
     /**

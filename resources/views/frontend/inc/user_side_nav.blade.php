@@ -313,7 +313,7 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('model-albums') }}" class="aiz-side-nav-link {{ areActiveRoutes(['areActiveRoutes'])}}">
+                    <a href="{{ route('model-albums') }}" class="aiz-side-nav-link {{ areActiveRoutes(['model-albums','view-albums'])}}">
                         <i class="las la-dollar-sign aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{translate('Model Albums')}}</span>
                     </a>

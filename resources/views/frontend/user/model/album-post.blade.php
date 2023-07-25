@@ -6,7 +6,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Model Gallery') }}</h1>
+                <h1 class="h3">{{ translate('Model Album Gallery') }}</h1>
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="card-body">
             <form action="{{ route('model_upload_image') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
+                <input type="hidden" name="album_id" value="{{$id}}">
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">{{ translate('Photo') }}</label>
                     <div class="col-md-10">
@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                            <input type="hidden" name="photo" class="selected-files">
+                            <input type="hidden" name="photo" class="selected-files" required>
                         </div>
                         <div class="file-preview box sm">
                         </div>
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                            <input type="hidden" name="video" class="selected-files">
+                            <input type="hidden" name="video" class="selected-files" required>
                         </div>
                         <div class="file-preview box sm">
                         </div>
@@ -58,24 +58,6 @@
                 </div>
 
             </form>
-
-
-          <form action="{{route('set_model_commission') }}" method="POST">
-            @csrf
-            <div class="form-group row">
-                <label class="col-md-2 col-form-label">{{ translate('Your Commission') }}</label>
-                <div class="col-md-10">
-                    <input type="number" class="form-control" placeholder="{{ translate('Your Commission') }}" name="model_commission"
-                        value="{{ Auth::user()->defaultModelCommission->model_commission ?? '' }}">
-                </div>
-            </div>
-
-            <div class="form-group row mb-0">
-                <div class="col-12 text-right mb-3">
-                    <button type="submit" class="btn btn-primary">{{ translate('Set Commission') }}</button>
-                </div>
-            </div>
-          </form>
 
         </div>
     </div>
