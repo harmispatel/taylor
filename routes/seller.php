@@ -193,6 +193,7 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
 
     Route::get('model_list', [HomeController::class, 'model_list'])->name('model_list');
     Route::get('album_list/{id}', [HomeController::class, 'album_list'])->name('album_list');
+    Route::post('verify-accesscode', [HomeController::class, 'verify_access_code'])->name('verify-accesscode');
     Route::get('album_post_list/{id}', [HomeController::class, 'album_post_list'])->name('album_post_list');
     Route::get('single_model_gallery/{id}', [HomeController::class, 'single_model_gallery'])->name('single_model_gallery');
     Route::match(['get','post'],'all_model_gallery', [HomeController::class, 'all_model_gallery'])->name('all_model_gallery');

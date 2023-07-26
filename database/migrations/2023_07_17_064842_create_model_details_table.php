@@ -23,6 +23,7 @@ class CreateModelDetailsTable extends Migration
             $table->string('tylormade_id')->nullable();
             $table->integer('target_id')->nullable();
             $table->integer('upload_id')->nullable();
+            $table->integer('album_id')->nullable();
             $table->string('height')->nullable();
             $table->timestamps();
         });

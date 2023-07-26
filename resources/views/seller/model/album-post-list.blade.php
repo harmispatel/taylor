@@ -7,35 +7,6 @@
             <h1 class="h3 text-primary">{{ translate('Images') }}</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
-            <select name="product_category_filter" class="form-control">
-                <option value="">--Filter By Product Category--</option>
-                <option value="">{{ translate('Select Category') }}</option>
-                <option value="1">{{ translate('Clothing') }}</option>
-                <option value="2">{{ translate('Shoes') }}</option>
-                <option value="3">{{ translate('Jewelry') }}</option>
-                <option value="4">{{ translate('Watches') }}</option>
-                <option value="5">{{ translate('Handbags') }}</option>
-                <option value="6">{{ translate('Accessories') }}</option>
-                <option value="7">{{ translate('Hair') }}</option>
-                <option value="8">{{ translate('Skin') }}</option>
-                <option value="9">{{ translate('Makeup') }}</option>
-                <option value="10">{{ translate('Foot, Hand and Nail') }}</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <select name="target_filter" class="form-control">
-                <option value="">--Filter By Target--</option>
-                <option value="">{{ translate('Select Target') }}</option>
-                <option value="1">{{ translate('Women’s fashion') }}</option>
-                <option value="2">{{ translate('Men’s fashion') }}</option>
-                <option value="3">{{ translate('Women’s beauty') }}</option>
-                <option value="4">{{ translate('Men’s beauty') }}</option>
-            </select>
-        </div>
-    </div>
 </div>
 
 <div class="row">

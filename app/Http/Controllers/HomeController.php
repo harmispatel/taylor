@@ -1674,6 +1674,24 @@ class HomeController extends Controller
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
         return view('seller.model.album-post-list',compact('imagesPath'));
     }
+    public function verify_access_code(Request $request){
+        try{
+            $albums=ModelAlbum::where('id',$request->albumId)->where('access_code',$request->access_code)->first();
+            if(!empty($albums)){
+                $result['success']=1;
+                return $result;
+            }
+            else{
+                $result['success']=0;
+                return $result;
+            }
+
+        } catch (\Exception $e) {
+            $result['success']=0;
+            return $result;
+
+        }
+    }
     public function single_model_gallery($id)
     {
         $imagesId = ModelImage::where('model_id',$id)->where('album_id',null)->orwhere('album_id',0)->pluck('uploaded_image_id'); // get images id

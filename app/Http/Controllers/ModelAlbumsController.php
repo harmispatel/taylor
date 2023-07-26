@@ -86,7 +86,6 @@ class ModelAlbumsController extends Controller
         $id=Crypt::decrypt($id);
         $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',$id)->pluck('uploaded_image_id');
         $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
-
         return view('frontend.user.model.album-post',compact('imagesPath','id'));
     }
 
