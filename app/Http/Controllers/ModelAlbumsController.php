@@ -38,6 +38,9 @@ class ModelAlbumsController extends Controller
     public function store(Request $request)
     {
         $input=$request->except('_token','albumId');
+        if(isset($request->is_public) && $request->is_public != 1){
+            $input['access_code']="";
+        }
         $input['model_id']=auth()->id();
         if($request->albumId != 0){
             $albums=ModelAlbum::find($request->albumId);

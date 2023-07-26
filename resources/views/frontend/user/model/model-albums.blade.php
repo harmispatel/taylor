@@ -16,6 +16,7 @@
                             <th>{{ translate('No')}}</th>
                             <th data-breakpoints="md">{{ translate('Name')}}</th>
                             <th data-breakpoints="md">{{ translate('Type')}}</th>
+                            <th data-breakpoints="md">{{ translate('Access Code')}}</th>
                             <th class="text-right">{{ translate('Action')}}</th>
                         </tr>
                     </thead>
@@ -26,6 +27,7 @@
                                 <td>{{$i}}</td>
                                 <td>{{$value->name}}</td>
                                 <td>{{($value->is_public==1) ? translate('Public') : translate('Private') }}</td>
+                                <td>{{$value->access_code}}</td>
                                 <td class="text-right">
                                 <a href="{{route('view-albums',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Details')}}"><i class="las la-eye"></i></a>
                                 <button onclick="openAlbumsModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="Edit"><i class="las la-edit"></i></button>
@@ -71,10 +73,20 @@
                                     <label>{{ translate('Type')}}</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <select name="is_public" class="form-control" id="is_public">
-                                        <option value="0">Private</option>
-                                        <option value="1">Public</option>
+                                    <select name="is_public" class="form-control mb-3" onchange="displayAccessCode(this.value)" id="is_public">
+                                        <option value="">{{ translate('--Select Type--')}}</option>
+                                        <option value="0">{{ translate('Private')}}</option>
+                                        <option value="1">{{ translate('Public')}}</option>
                                     </select>
+                                </div>
+                            </div>
+                            <!-- Hidden Field -->
+                            <div class="row access_code" style="display:none;">
+                                <div class="col-md-2">
+                                    <label>{{ translate('Access Code')}}</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="text" name="access_code" id="access_code" class="form-control mb-3">
                                 </div>
                             </div>
                             <div class="form-group text-right">
@@ -108,6 +120,11 @@
                 data: {"albumId":albumId},
                 success:function(data) {
                     if(data.success==1){
+                        if(data.albums.is_public==1){
+                            $('.modal-body #access_code').val(data.albums.access_code);
+                            $('.access_code').show();
+                            $('#access_code').prop('required',true);
+                        }
                         $('#is_public option').attr('selected', false);
                         $('#is_public option[value="' + data.albums.is_public + '"]').attr("selected", "selected");
                         $('.modal-body #name').val(data.albums.name);
@@ -122,22 +139,30 @@
     }
     function storeAlbumsDetails(){
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "modelLike",
+            data: {"model_id":id,"is_like":isLike},
+            dataType: 'json',
+            success: function (data) {
+            },
+            error: function (data) {
+            }
+        });
+    }
+    function displayAccessCode(value){
+        if(value==1){
+            $('.access_code').show();
+            $('#access_code').prop('required',true);
+        }else{
+            $('.access_code').hide();
+            $('#access_code').prop('required',false);
         }
-    });
-    $.ajax({
-        type: "POST",
-        url: "modelLike",
-        data: {"model_id":id,"is_like":isLike},
-        dataType: 'json',
-        success: function (data) {
-        },
-        error: function (data) {
-        }
-    });
-
-}
+    }
 </script>
 @endsection

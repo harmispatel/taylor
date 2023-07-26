@@ -31,6 +31,7 @@
                 <h5 class="card-title">{{@$model->name}}</h5>
                 <div class="product_box_btn_group">
                     <a title="See Images" href="{{ route('seller.single_model_gallery',@$model->id)}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
+                    <a title="See all posts" href="{{ route('seller.all_model_gallery')}}" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$model->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
                     <a title="Modal Id" href="#" class="btn btn-success">#{{@$model->id}}</a>
                     <a title="Albums" href="{{route('seller.album_list',encrypt(@$model->id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>

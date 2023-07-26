@@ -17,6 +17,7 @@ class CouponController extends Controller
      */
     public function index()
     {
+
         $coupons = Coupon::where('user_id', Auth::user()->id)->orderBy('id','desc')->get();
         return view('seller.coupons.index', compact('coupons'));
     }
@@ -29,8 +30,8 @@ class CouponController extends Controller
     public function create()
     {
         return view('seller.coupons.create');
-    } 
-    
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -82,7 +83,7 @@ class CouponController extends Controller
     public function update(CouponRequest $request, Coupon $coupon)
     {
         $coupon->update($request->validated());
-        
+
         flash(translate('Coupon has been updated successfully'))->success();
         return redirect()->route('seller.coupon.index');
     }

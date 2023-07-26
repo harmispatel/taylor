@@ -17,6 +17,7 @@ class CreateModelAlbumsTable extends Migration
             $table->id();
             $table->integer('model_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('access_code')->nullable();
             $table->tinyInteger('is_public')->default(0);
             $table->timestamps();
         });

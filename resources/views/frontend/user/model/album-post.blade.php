@@ -78,7 +78,7 @@
                         @endif
                     </div>
                     <a href="#" data-href="{{route('delete_model_picture',Crypt::encrypt($imagePath->id))}}" class="btn btn-danger dt_btn  confirm-delete"><i class="fa-solid fa-trash"></i></a>
-                    <button  data-toggle="modal" onclick="openDetailsModel({{isset($imagePath->id) ? $imagePath->id : ''}})" class="btn btn-success add_btn">Add</button>
+                    <button  data-toggle="modal" onclick="openDetailsModel({{isset($imagePath->id) ? $imagePath->id : ''}},{{$id}})" class="btn btn-success add_btn">Add</button>
                 </div>
             </div>
         @endforeach
@@ -99,6 +99,7 @@
                 <form action="{{ route('store_model_details') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="upload_id" id="upload_id">
+                    <input type="hidden" name="album_id" id="albumId">
                     <div class="modal-body">
                         <div class="p-3">
                             <div class="row">
@@ -210,8 +211,10 @@
                     AIZ.plugins.notify('danger', data.message);
             });
         });
-        function openDetailsModel(uploadId){
+        function openDetailsModel(uploadId,albumId){
+
             $('#upload_id').val(uploadId);
+            $('#albumId').val(albumId);
             $('#detail-modal').modal('show');
         }
         function getBodySize(categoryId){

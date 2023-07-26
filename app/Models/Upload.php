@@ -22,4 +22,10 @@ class Upload extends Model
     {
     	return $this->belongsTo(User::class);
     }
+
+    public function model_details()
+    {
+    	return $this->belongsTo(ModelDetail::class,'id','upload_id');
+    }
+
 }

@@ -7,6 +7,76 @@
             <h1 class="h3 text-primary">{{ translate('Images') }}</h1>
         </div>
     </div>
+    <form method="POST"  action="{{ route('seller.all_model_gallery') }}"  name="filter_form" id="filterForm">
+        @csrf
+        <div class="row">
+        <div class="col-md-3">
+                @php
+                    $users=App\Models\User::where('user_type','model')->pluck('name','id');
+                @endphp
+                <select name="user_id" onchange="formsubmit()" class="form-control">
+                    <option value="">{{ translate('Profile Name') }}</option>
+                    <option value="">{{ translate('Select Name') }}</option>
+                    @if(count($users) > 0)
+                        @foreach($users as $key=> $user)
+                        <option value="{{$key}}">{{ $user }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="target_id" onchange="formsubmit()" class="form-control">
+                    <option value="">Target</option>
+                    <option value="">{{ translate('Select Target') }}</option>
+                    <option value="1">{{ translate('Women’s fashion') }}</option>
+                    <option value="2">{{ translate('Men’s fashion') }}</option>
+                    <option value="3">{{ translate('Women’s beauty') }}</option>
+                    <option value="4">{{ translate('Men’s beauty') }}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="target_filter" class="form-control">
+                    <option value="">Body Size</option>
+                    <option value="">{{ translate('Select Size') }}</option>
+                    <option value="1">{{ translate('Women’s fashion') }}</option>
+                    <option value="2">{{ translate('Men’s fashion') }}</option>
+                    <option value="3">{{ translate('Women’s beauty') }}</option>
+                    <option value="4">{{ translate('Men’s beauty') }}</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="product_category" onchange="formsubmit()" class="form-control">
+                    <option value="">Product Category</option>
+                    <option value="">{{ translate('Select Category') }}</option>
+                    <option value="1">{{ translate('Clothing') }}</option>
+                    <option value="2">{{ translate('Shoes') }}</option>
+                    <option value="3">{{ translate('Jewelry') }}</option>
+                    <option value="4">{{ translate('Watches') }}</option>
+                    <option value="5">{{ translate('Handbags') }}</option>
+                    <option value="6">{{ translate('Accessories') }}</option>
+                    <option value="7">{{ translate('Hair') }}</option>
+                    <option value="8">{{ translate('Skin') }}</option>
+                    <option value="9">{{ translate('Makeup') }}</option>
+                    <option value="10">{{ translate('Foot, Hand and Nail') }}</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                @php
+                    $brand=App\Models\ModelDetail::pluck('brand');
+                @endphp
+                <select name="brand" onchange="formsubmit()" class="form-control">
+                    <option value="">Brand</option>
+                    <option value="">{{ translate('Select Brand') }}</option>
+                    @if(count($brand) > 0)
+                        @foreach($brand as $value)
+                        <option value="{{$value}}">{{ $value }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+
+        </div>
+    </form>
 </div>
 
 <div class="row">
@@ -99,6 +169,12 @@
     </div>
     @endif
 </div>
+@endsection
 
-
+@section('script')
+<script type="text/javascript">
+    function formsubmit(){
+        $('#filterForm').submit();
+    }
+</script>
 @endsection
