@@ -1,5 +1,4 @@
-@extends('seller.layouts.app')
-
+@extends('frontend.layouts.user_panel')
 @section('panel_content')
 <div class="aiz-titlebar mt-2 mb-4">
     <div class="row align-items-center">
@@ -16,7 +15,7 @@
     @if (count($imagesPath) > 0)
     @foreach ($imagesPath as $imagePath)
     @php
-    $likeClass=getModelLikePostWise(@$imagePath->id,auth()->user()->id,'albumPost');
+    $likeClass=getModelLikePostWise(@$imagePath->id,auth()->user()->id);
     @endphp
     <div class="col-sm-6 col-md-4  col-xxl-3">
         <div class="card product_box">
@@ -33,19 +32,19 @@
                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                     </a>
                 </div>
-                <a href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn-success add_btn">View Detail</a>
+                <!-- <a href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn-success add_btn">View Detail</a> -->
             </div>
             <div class="card-body">
                 <!-- <h5 class="card-title">{{@$imagePath->name}}</h5> -->
                 <div class="product_box_btn_group">
-                    <a title="View Details" href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
+                    <a title="View Details" href="{{route('user.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
-                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->id}}</a>
-                    <a title="Albums" href="#" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
+                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$id}}</a>
+                    <a title="Albums" href="{{route('user.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">
-                <a class="like{{$i}} {{$likeClass}}" onclick="giveLike({{$i}},{{@$imagePath->id}},{{"'albumPost'"}})">
+                <a class="like{{$i}} {{$likeClass}}" onclick="giveLike({{$i}},{{@$id}},{{@$imagePath->id}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#myModal">
@@ -66,7 +65,7 @@
                         <form method="POST" action="{{route('seller.add.comment')}}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
-                            <input type="hidden" name="model_id" value="{{isset($imagePath->id) ? $imagePath->id :''}}">
+                            <input type="hidden" name="model_id" value="{{@$id}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">
@@ -100,7 +99,5 @@
     @endif
 </div>
 
-@endsection
-@section('script')
 
 @endsection

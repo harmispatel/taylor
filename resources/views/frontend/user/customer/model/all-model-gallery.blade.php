@@ -1,4 +1,4 @@
-@extends('seller.layouts.app')
+@extends('frontend.layouts.user_panel')
 
 @section('panel_content')
 <div class="aiz-titlebar mt-2 mb-4">
@@ -135,15 +135,14 @@
                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                     </a>
                 </div>
-                <a href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn-success add_btn">View Detail</a>
             </div>
             <div class="card-body">
                 <!-- <h5 class="card-title">{{@$imagePath->name}}</h5> -->
                 <div class="product_box_btn_group">
-                    <a title="View Details" href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
+                    <a title="View Details" href="{{route('user.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
                     <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->user_id}}</a>
-                    <a title="Albums" href="{{route('seller.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
+                    <a title="Albums" href="{{route('user.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">

@@ -297,6 +297,13 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.all_model_gallery')}}" class="aiz-side-nav-link {{ areActiveRoutes(['all_model_gallery'])}}">
+                        <i class="las la-eye aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('View All Post') }}</span>
+                    </a>
+                </li>
+
+                <li class="aiz-side-nav-item">
                     <a href="{{ route('seller.requests_to_be_model') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.requests_to_be_model'])}}">
                         <i class="las la-atom aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Requests To Model') }}</span>

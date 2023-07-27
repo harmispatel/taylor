@@ -1627,6 +1627,9 @@ class HomeController extends Controller
     public function view_model_details($id){
         $id=Crypt::decrypt($id);
         $modelDetails=ModelDetail::where('upload_id',$id)->paginate(5);
+        if(Auth::user()->user_type == 'customer'){
+            return view('frontend.user.customer.model.model-detail',compact('modelDetails'));
+        }
         return view('seller.model.model-detail',compact('modelDetails'));
 
     }
@@ -1661,11 +1664,17 @@ class HomeController extends Controller
     public function model_list()
     {
         $models = User::with('avatarImage')->where('user_type', 'model')->paginate(5);
+        if(Auth::user()->user_type == 'customer'){
+            return view('frontend.user.customer.model.model-list',compact('models'));
+        }
         return view('seller.model.model-list',compact('models'));
     }
     public function album_list($model_id){
         $model_id = decrypt($model_id);
         $albums=ModelAlbum::latest()->where('model_id',$model_id)->paginate(5);
+        if(Auth::user()->user_type == 'customer'){
+            return view('frontend.user.customer.model.albums-list',compact('albums'));
+        }
         return view('seller.model.albums-list',compact('albums'));
     }
     public function album_post_list($album_id){
@@ -1696,6 +1705,9 @@ class HomeController extends Controller
     {
         $imagesId = ModelImage::where('model_id',$id)->where('album_id',0)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
+        if(Auth::user()->user_type == 'customer'){
+            return view('frontend.user.customer.model.single-model-gallery',compact('imagesPath','id'));
+        }
         return view('seller.model.single-model-gallery',compact('imagesPath','id'));
     }
     public function all_model_gallery(Request $request)
@@ -1705,7 +1717,6 @@ class HomeController extends Controller
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
         $post='';
         $post=$request->all();
-        // echo "<pre>";print_r($imagesPath);exit;
         $pCategory=isset($request->product_category) ? $request->product_category : '';
         $targerId=isset($request->target_id) ? $request->target_id : '';
         $brand=isset($request->brand) ? $request->brand : '';
@@ -1737,6 +1748,10 @@ class HomeController extends Controller
                     $query->where("model_size", $size);
                 })->get();
             }
+
+        }
+        if(Auth::user()->user_type == 'customer'){
+            return view('frontend.user.customer.model.all-model-gallery',compact('imagesPath','post'));
 
         }
         return view('seller.model.all-model-gallery',compact('imagesPath','post'));

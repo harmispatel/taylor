@@ -235,7 +235,20 @@
                             </a>
                         </li>
                     @endif
-
+                    @if(Auth::user()->user_type == 'customer')
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('user.model_list') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.model_list','seller.album_list','seller.album_post_list'])}}">
+                                <i class="las la-atom aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{ translate('Models List') }}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('user.all_model_gallery')}}" class="aiz-side-nav-link {{ areActiveRoutes(['all_model_gallery'])}}">
+                                <i class="las la-eye aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{ translate('View All Post') }}</span>
+                            </a>
+                        </li>
+                    @endif
                     @if (addon_is_activated('club_point'))
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('earnng_point_for_user') }}" class="aiz-side-nav-link {{ areActiveRoutes(['earnng_point_for_user'])}}">

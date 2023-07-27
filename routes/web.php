@@ -118,6 +118,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/users/login', 'login')->name('user.login');
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
+    Route::get('model_list','model_list')->name('user.model_list');
+    Route::match(['get','post'],'all_model_gallery','all_model_gallery')->name('user.all_model_gallery');
+    Route::get('view_model_details/{id}','view_model_details')->name('user.view_model_details');
+    Route::get('album_list/{id}','album_list')->name('user.album_list');
+    Route::get('single_model_gallery/{id}','single_model_gallery')->name('user.single_model_gallery');
 
     //Home Page
 
