@@ -40,12 +40,12 @@
                 <div class="product_box_btn_group">
                     <a title="View Details" href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
-                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->id}}</a>
+                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$id}}</a>
                     <a title="Albums" href="{{route('seller.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">
-                <a class="like{{$i}} {{$likeClass}}" onclick="giveLike({{$i}},{{@$imagePath->id}})">
+                <a class="like{{$i}} {{$likeClass}}" onclick="giveLike({{$i}},{{@$id}},{{@$imagePath->id}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#myModal">
@@ -66,7 +66,7 @@
                         <form method="POST" action="{{route('seller.add.comment')}}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
-                            <input type="hidden" name="model_id" value="{{isset($imagePath->id) ? $imagePath->id :''}}">
+                            <input type="hidden" name="model_id" value="{{@$id}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">

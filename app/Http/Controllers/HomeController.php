@@ -1594,7 +1594,7 @@ class HomeController extends Controller
 
     public function model_gallery()
     {
-        $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',null)->orwhere('album_id',0)->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',0)->pluck('uploaded_image_id'); // get images id
         // $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name')->paginate(3); // get images path
         $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
         return view('frontend.user.model.model-gallery',compact('imagesPath'));
@@ -1694,20 +1694,24 @@ class HomeController extends Controller
     }
     public function single_model_gallery($id)
     {
-        $imagesId = ModelImage::where('model_id',$id)->where('album_id',null)->orwhere('album_id',0)->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('model_id',$id)->where('album_id',0)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
         return view('seller.model.single-model-gallery',compact('imagesPath','id'));
     }
     public function all_model_gallery(Request $request)
     {
 
-        $imagesId = ModelImage::where('album_id',null)->orwhere('album_id',0)->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('album_id',0)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
+        $post='';
+        $post=$request->all();
+        // echo "<pre>";print_r($imagesPath);exit;
         $pCategory=isset($request->product_category) ? $request->product_category : '';
         $targerId=isset($request->target_id) ? $request->target_id : '';
         $brand=isset($request->brand) ? $request->brand : '';
         $userId=isset($request->user_id) ? $request->user_id : '';
-        if(isset($request->product_category) || isset($request->target_id) || isset($request->brand) || isset($request->user_id)  ){
+        $size=isset($request->size) ? $request->size : '';
+        if(isset($request->product_category) || isset($request->target_id) || isset($request->brand) || isset($request->user_id) || isset($request->size)  ){
             if(!empty($pCategory)){
                 $imagesPath = Upload::whereIn('id', $imagesId)->whereHas("model_details",function($query) use ($pCategory){
                     $query->where("category_id", $pCategory);
@@ -1728,9 +1732,14 @@ class HomeController extends Controller
                     $query->where("id", $userId);
                 })->get();
             }
+            if(!empty($size)){
+                $imagesPath = Upload::whereIn('id', $imagesId)->whereHas("model_details",function($query) use ($size){
+                    $query->where("model_size", $size);
+                })->get();
+            }
 
         }
-        return view('seller.model.all-model-gallery',compact('imagesPath'));
+        return view('seller.model.all-model-gallery',compact('imagesPath','post'));
     }
 
     public function model_conversations_create($model_id)

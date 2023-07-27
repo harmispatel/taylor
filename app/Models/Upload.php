@@ -28,4 +28,5 @@ class Upload extends Model
     	return $this->belongsTo(ModelDetail::class,'id','upload_id');
     }
 
+
 }

@@ -37,7 +37,13 @@ class ModelLikeController extends Controller
     {
         try{
             $input=$request->all();
-            $modelLikeDetails=ModelLike::where('model_id',$request->model_id)->where('user_id',auth()->user()->id)->first();
+
+            if($request->like_type=='modelPostLike'){
+
+                $modelLikeDetails=ModelLike::where(['model_id'=>$request->model_id,'like_type'=>'modelPostLike','user_id'=>auth()->user()->id])->first();
+            }else{
+                $modelLikeDetails=ModelLike::where('like_type','modelLike')->where('model_id',$request->model_id)->where('user_id',auth()->user()->id)->first();
+            }
             $input['user_id']=auth()->user()->id;
             if(!empty($modelLikeDetails)){
                 $modelLikeDetails->update($input);

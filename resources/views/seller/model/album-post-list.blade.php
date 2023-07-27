@@ -100,5 +100,7 @@
     @endif
 </div>
 
+@endsection
+@section('script')
 
 @endsection

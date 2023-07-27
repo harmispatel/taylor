@@ -1266,9 +1266,9 @@ if (!function_exists('appointments_expire')) {
 }
 // Get modellike seller vise
 if (!function_exists('getModelLikeSellervise')) {
-    function getModelLikeSellervise($modelId,$userId)
+    function getModelLikeSellervise($modelId,$userId,$likeType=null)
     {
-        $modelLikeDetails=ModelLike::where('model_id',$modelId)->where('user_id',$userId)->first();
+        $modelLikeDetails=ModelLike::where('model_id',$modelId)->where('like_type',$likeType)->where('user_id',$userId)->first();
         $like='';
         $isLike=isset($modelLikeDetails->is_like) ? $modelLikeDetails->is_like : '';
         if($isLike==1){
@@ -1279,9 +1279,9 @@ if (!function_exists('getModelLikeSellervise')) {
 }
 // Get modellike seller vise
 if (!function_exists('getModelLikePostWise')) {
-    function getModelLikePostWise($uploadId,$userId)
+    function getModelLikePostWise($uploadId,$userId,$likeType=null)
     {
-        $modelLikeDetails=ModelLike::where('upload_id',$uploadId)->where('user_id',$userId)->first();
+        $modelLikeDetails=ModelLike::where('upload_id',$uploadId)->where('like_type',$likeType)->where('user_id',$userId)->first();
         $like='';
         $isLike=isset($modelLikeDetails->is_like) ? $modelLikeDetails->is_like : '';
         if($isLike==1){

@@ -236,18 +236,18 @@
 
             if(categoryId==1){
                 var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
-                '<option value="1">{{ translate('XXS(Int) /32 (EU) /4 (UK) /0 (US)') }}</option>'
-                    +'<option value="2">{{ translate('XS(Int) /34 (EU) /6 (UK) /2 (US)') }}</option>'
-                    +'<option value="3">{{ translate('S(Int) /36 (EU) /8 (UK) /4 (US)') }}</option>'
-                    +'<option value="4">{{ translate('M(Int) /38 (EU) /10 (UK) /6 (US)') }}</option>'
-                    +'<option value="5">{{ translate('L(Int) /40 (EU) /12 (UK) /8 (US)') }}</option>'
-                    +'<option value="6">{{ translate('XL(Int) /42 (EU) /14 (UK) /10 (US)') }}</option>'
-                    +'<option value="7">{{ translate('XXL(Int) /44 (EU)/16 (UK)/12 (US)') }}</option>'
-                    +'<option value="8">{{ translate('3XL(Int) /46 (EU) /18 (UK) /14 (US)') }}</option>'
-                    +'<option value="9">{{ translate('4XL(Int) /48 (EU) /20 (UK) /16 (US)') }}</option>'
-                    +'<option value="10">{{ translate('5XL(Int) /50 (EU) /22 (UK) /18 (US)') }}</option>'
-                    +'<option value="11">{{ translate('6XL(Int) /52 (EU) /24 (UK) /20 (US)') }}</option>'
-                    +'<option value="12">{{ translate('7XL(Int) /54 (EU) /26 (UK) /22 (US)') }}</option>'
+                '<option value="{{translate('XXS')}}">{{ translate('XXS(Int) /32 (EU) /4 (UK) /0 (US)') }}</option>'
+                    +'<option value="{{translate('XS')}}">{{ translate('XS(Int) /34 (EU) /6 (UK) /2 (US)') }}</option>'
+                    +'<option value="{{translate('S')}}">{{ translate('S(Int) /36 (EU) /8 (UK) /4 (US)') }}</option>'
+                    +'<option value="{{translate('M')}}">{{ translate('M(Int) /38 (EU) /10 (UK) /6 (US)') }}</option>'
+                    +'<option value="{{translate('L')}}">{{ translate('L(Int) /40 (EU) /12 (UK) /8 (US)') }}</option>'
+                    +'<option value="{{translate('XL')}}">{{ translate('XL(Int) /42 (EU) /14 (UK) /10 (US)') }}</option>'
+                    +'<option value="{{translate('XXL')}}">{{ translate('XXL(Int) /44 (EU)/16 (UK)/12 (US)') }}</option>'
+                    +'<option value="{{translate('3XL')}}">{{ translate('3XL(Int) /46 (EU) /18 (UK) /14 (US)') }}</option>'
+                    +'<option value="{{translate('4XL')}}">{{ translate('4XL(Int) /48 (EU) /20 (UK) /16 (US)') }}</option>'
+                    +'<option value="{{translate('5XL')}}">{{ translate('5XL(Int) /50 (EU) /22 (UK) /18 (US)') }}</option>'
+                    +'<option value="{{translate('6XL')}}">{{ translate('6XL(Int) /52 (EU) /24 (UK) /20 (US)') }}</option>'
+                    +'<option value="{{translate('7XL')}}">{{ translate('7XL(Int) /54 (EU) /26 (UK) /22 (US)') }}</option>'
                     +'</select>';
                     $('.cloth').show();
                     $('.category_select_box').html(html);
@@ -255,30 +255,30 @@
             else if(categoryId==2){
 
                 var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
-                '<option value="1">{{ translate('36 /36 (EU) /3.5 (UK) /6 (US) /4.5 (AU)') }}</option>'
-                +'<option value="2">{{ translate('37 /37 (EU) /4 (UK) / 6.5(US) /5 (AU)') }}</option>'
-                +'<option value="3">{{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
-                +'<option value="4">{{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
-                +'<option value="5">{{ translate('40 /40 (EU) /6.5 (UK) / 9(US) /7.5 (AU)') }}</option>'
-                +'<option value="6">{{ translate('41 /41 (EU) /7 (UK) / 9.5(US) /8 (AU)') }}</option>'
-                +'<option value="7">{{ translate('42 /42 (EU) /7.5 (UK) / 10(US) /8.5 (AU)') }}</option>'
-                +'<option value="8">{{ translate('43 /43 (EU) /8(UK) / 10.5(US) /9(AU)') }}</option>'
+                '<option value="36">{{ translate('36 /36 (EU) /3.5 (UK) /6 (US) /4.5 (AU)') }}</option>'
+                +'<option value="37">{{ translate('37 /37 (EU) /4 (UK) / 6.5(US) /5 (AU)') }}</option>'
+                +'<option value="38">{{ translate('38 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
+                +'<option value="39">{{ translate('39 /39 (EU) /5.5-6 (UK) / 8-8.5(US) /6.5-7 (AU)') }}</option>'
+                +'<option value="40">{{ translate('40 /40 (EU) /6.5 (UK) / 9(US) /7.5 (AU)') }}</option>'
+                +'<option value="41">{{ translate('41 /41 (EU) /7 (UK) / 9.5(US) /8 (AU)') }}</option>'
+                +'<option value="42">{{ translate('42 /42 (EU) /7.5 (UK) / 10(US) /8.5 (AU)') }}</option>'
+                +'<option value="43">{{ translate('43 /43 (EU) /8(UK) / 10.5(US) /9(AU)') }}</option>'
                 +'</select>';
                 $('.cloth').show();
                 $('.category_select_box').html(html);
             }
             else if(categoryId==7){
                 var html='<select class="form-control aiz-selectpicker mb-3" name="model_size" data-live-search="true" data-placeholder="{{ translate('Select your country') }}"  required>'+
-                '<option value="1">{{ translate('10 25cm') }}</option>'
-                +'<option value="2">{{ translate('12 30cm') }}</option>'
-                +'<option value="3">{{ translate('14 35cm') }}</option>'
-                +'<option value="4">{{ translate('16 40cm') }}</option>'
-                +'<option value="5">{{ translate('18 45cm') }}</option>'
-                +'<option value="6">{{ translate('20 50cm') }}</option>'
-                +'<option value="7">{{ translate('22 55cm') }}</option>'
-                +'<option value="8">{{ translate('24 60cm') }}</option>'
-                +'<option value="9">{{ translate('26 65cm') }}</option>'
-                +'<option value="10">{{ translate('28 70cm') }}</option>'
+                '<option value="{{ translate('25cm') }}">{{ translate('10 25cm') }}</option>'
+                +'<option value="{{ translate('30cm') }}">{{ translate('12 30cm') }}</option>'
+                +'<option value="{{ translate('35cm') }}">{{ translate('14 35cm') }}</option>'
+                +'<option value="{{ translate('40cm') }}">{{ translate('16 40cm') }}</option>'
+                +'<option value="{{ translate('45cm') }}">{{ translate('18 45cm') }}</option>'
+                +'<option value="{{ translate('50cm') }}">{{ translate('20 50cm') }}</option>'
+                +'<option value="{{ translate('55cm') }}">{{ translate('22 55cm') }}</option>'
+                +'<option value="{{ translate('60cm') }}">{{ translate('24 60cm') }}</option>'
+                +'<option value="{{ translate('65cm') }}">{{ translate('26 65cm') }}</option>'
+                +'<option value="{{ translate('70cm') }}">{{ translate('28 70cm') }}</option>'
                 +'</select>';
                 $('.cloth').show();
                 $('.category_select_box').html(html);

@@ -1,9 +1,6 @@
 @extends('seller.layouts.app')
 
 @section('panel_content')
-    <div class="text-right mb-3">
-        <button data-toggle="modal" onclick="openAlbumsModel(0)" class="btn btn-primary">Add</button>
-    </div>
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0 h6">{{ translate('Albums List') }}</h5>

@@ -15,7 +15,7 @@
     @endphp
     @foreach ($models as $model)
         @php
-            $likeClass=getModelLikeSellervise($model->id,auth()->user()->id);
+            $likeClass=getModelLikeSellervise($model->id,auth()->user()->id,'modelLike');
         @endphp
     <div class="col-sm-6 col-md-4  col-xxl-3">
         <div class="card product_box">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="product_short_icon">
-                <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}},{{@$model->avatarImage->id}})">
+                <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}},{{isset($model->avatarImage->id) ? $model->avatarImage->id : 0 }},{{"'modelLike'"}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#myModal">
