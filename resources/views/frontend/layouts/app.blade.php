@@ -65,6 +65,8 @@
     <link rel="stylesheet" href="{{ static_asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"/>
 	<link rel="stylesheet" href="{{ asset('/public/assets/css/jquery.datetimepicker.css') }}">
+
+
     <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <script>
         var AIZ = AIZ || {};
@@ -244,6 +246,8 @@
     <!-- SCRIPTS -->
     <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
     <script src="{{ static_asset('assets/js/aiz-core.js') }}"></script>
+    <!-- CUSTOM JS -->
+    <script src="{{ static_asset('assets/js/custom.js') }}"></script>
 
 
 

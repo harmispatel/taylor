@@ -25,11 +25,11 @@
                                 <td>{{($value->is_public==1) ? translate('Public') : translate('Private') }}</td>
                                 <td class="text-right">
                                     @if($value->is_public==1)
-                                        <form action="{{ route('seller.album_post_list',Crypt::encrypt($value->id)) }}" id="album-post-list" method="GET" enctype="multipart/form-data">
+                                        <form action="{{ route('user.album_post_list',Crypt::encrypt($value->id)) }}" id="album-post-list" method="GET" enctype="multipart/form-data">
                                             <a  data-toggle="modal"  onclick="openAccessCodeModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
                                         </form>
                                     @else
-                                        <a href="{{route('seller.album_post_list',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
+                                        <a href="{{route('user.album_post_list',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
                                     @endif
                                 </td>
 
@@ -93,7 +93,7 @@
         });
         $.ajax({
             type: "POST",
-            url: "{{route('seller.verify-accesscode')}}",
+            url: "{{route('user.verify-accesscode')}}",
             data: {"access_code":access_code,"albumId":albumId},
             dataType: 'json',
             success: function (data) {

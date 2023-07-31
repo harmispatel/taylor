@@ -76,10 +76,6 @@ class MeasurerController extends Controller
         if (Auth::check()) {
 
             $measurer = User::findOrFail($request->measurer_id);
-
-            // dd($request->all());
-
-
             $curUser = Auth::user();
             if ($measurer) {
 
@@ -104,17 +100,7 @@ class MeasurerController extends Controller
     }
     public function measurer_conversations(Request $request, $id) {
 
-        // dd($request->all());
-
-
-
         $measurer_avaliablity = MeasurerAvailablityHours::where('measurer_id',$request->measurer_id)->get();
-
-
-
-        // dd($measurer_hours);
-
-
         if($request->isMethod('post')) {
 
             $message = new Message;
@@ -136,7 +122,6 @@ class MeasurerController extends Controller
         else {
             $conversation = Conversation::findOrFail(decrypt($id));
             $request_personalize_product = RequestPersonaliseProduct::where('id',$request->request_id)->first();
-            // dd($request->request_id);
             if ($conversation->sender_id == Auth::user()->id) {
                 $conversation->sender_viewed = 1;
             }
@@ -156,6 +141,9 @@ class MeasurerController extends Controller
                 }
             }else{
                 $commission = $commission->commission;
+            }
+            if(auth()->user()->user_type=='customer'){
+                return view('user.request.conversations', compact('conversation','request_personalize_product','measurer_avaliablity','measurer','commission'));
             }
             return view('seller.requests.conversations', compact('conversation','request_personalize_product','measurer_avaliablity','measurer','commission'));
         }

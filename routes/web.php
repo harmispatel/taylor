@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\{RequestController,ModelAlbumsController};
+use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController};
 
 /*
   |--------------------------------------------------------------------------
@@ -107,7 +107,6 @@ Route::controller(VerificationController::class)->group(function () {
 Route::controller(CustomerController::class)->group(function () {
     Route::post('measurer/conversations/create', 'measurer_conversations_create')->name('measurer.conversations.create');
     Route::get('measurer/appointments/create', 'appointment_create')->name('measurer.appointment.create');
-
     Route::match(['get', 'post'], 'measurer/conversations/show/{id}',  'measurer_conversations')->name('measurer.conversations');
 });
 
@@ -118,11 +117,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/users/login', 'login')->name('user.login');
     Route::get('/users/registration', 'registration')->name('user.registration');
     Route::post('/users/login/cart', 'cart_login')->name('cart.login.submit');
-    Route::get('model_list','model_list')->name('user.model_list');
-    Route::match(['get','post'],'all_model_gallery','all_model_gallery')->name('user.all_model_gallery');
-    Route::get('view_model_details/{id}','view_model_details')->name('user.view_model_details');
-    Route::get('album_list/{id}','album_list')->name('user.album_list');
-    Route::get('single_model_gallery/{id}','single_model_gallery')->name('user.single_model_gallery');
+
 
     //Home Page
 
@@ -177,6 +172,9 @@ Route::controller(HomeController::class)->group(function () {
 
 });
 
+Route::controller(ModelLikeController::class)->group(function () {
+    Route::post('modelLike','store')->name('like.model');
+ });
 // Language Switch
 Route::post('/language', [LanguageController::class, 'changeLanguage'])->name('language.change');
 
@@ -271,7 +269,15 @@ Route::resource('subscribers', SubscriberController::class);
 Route::get('/show/user/measurment/id/{uuid}',[HomeController::class, 'show_user_measurement'])->name('show_user_measurement');
 
 Route::post('search/measurment', [HomeController::class, 'searchMeasurment'])->name('search.measurment');
-
+Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
+    Route::controller(MeasurerController::class)->group(function () {
+        Route::match(['get', 'post'], 'measurer/conversations/show/{id}','measurer_conversations')->name('user.measurer.conversations');
+    });
+});
+// Model Comment Routes
+Route::controller(ModelCommentController::class)->group(function () {
+    Route::post('addcomment','store')->name('user.add.comment');
+ });
 
 Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
 
@@ -307,7 +313,20 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::get('update_request_model_status/{request}/{status}', [HomeController::class, 'update_request_model_status'])->name('update_request_model_status');
         Route::post('temporary_model_commission_store', [HomeController::class, 'temporary_model_commission_store'])->name('temporary_model_commission_store');
         Route::get('reject_measurment/{measurment_id}/{status}', [HomeController::class, 'reject_measurment'])->name('reject_measurment');
-
+        // New routes created on 28-07-2023
+        Route::get('model_list','model_list')->name('user.model_list');
+        Route::match(['get','post'],'all_model_gallery','all_model_gallery')->name('user.all_model_gallery');
+        Route::get('view_model_details/{id}','view_model_details')->name('user.view_model_details');
+        Route::get('album_list/{id}','album_list')->name('user.album_list');
+        Route::get('single_model_gallery/{id}','single_model_gallery')->name('user.single_model_gallery');
+        Route::get('model_conversations_create/{model_id}','model_conversations_create')->name('user.model_conversations_create');
+        Route::match(['get', 'post'], 'model_conversations/{conversation_id}/{model_id}','model_conversations')->name('user.model_conversations');
+        Route::post('model_appointment_create','model_appointment_create')->name('user.model_appointment_create');
+        Route::get('customer_requests_to_be_model','customer_requests_to_be_model')->name('user.requests_to_be_model');
+        Route::get('customer/nearbyMeasurers/customer/{id}','nearby_models')->name('user.requests.nearby_models');
+        Route::post('model_conversations_create-post/{model_id}','model_conversations_create')->name('user.model_conversations_create_post');
+        Route::post('verify-accesscode','verify_access_code')->name('user.verify-accesscode');
+        Route::get('album_post_list/{id}', [HomeController::class, 'album_post_list'])->name('user.album_post_list');
     });
     Route::controller(ModelAlbumsController::class)->group(function () {
 

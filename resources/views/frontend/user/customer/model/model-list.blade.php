@@ -31,7 +31,7 @@
                 <h5 class="card-title">{{@$model->name}}</h5>
                 <div class="product_box_btn_group">
                     <a title="See Images" href="{{ route('user.single_model_gallery',@$model->id)}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
-                    <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$model->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
+                    <a title="Hire Modal" href="{{ route('user.model_conversations_create',['model_id' => encrypt(@$model->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
                     <a title="Modal Id" href="#" class="btn btn-success">#{{@$model->id}}</a>
                     <a title="Albums" href="{{route('user.album_list',encrypt(@$model->id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
@@ -40,11 +40,11 @@
                 <a  class="like{{$i}} {{$likeClass}}"  onclick="giveLike({{$i}},{{@$model->id}},{{isset($model->avatarImage->id) ? $model->avatarImage->id : 0 }},{{"'modelLike'"}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
-                <button class="btn" data-toggle="modal" data-target="#myModal">
+                <button class="btn" data-toggle="modal" data-target="#myModal{{$i}}">
                     <i class="las la-comment"></i>
                 </button>
             </div>
-            <div class="modal" id="myModal">
+            <div class="modal" id="myModal{{$i}}">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -55,12 +55,12 @@
                         </div>
 
                         <!-- Modal body -->
-                        <form method="POST" action="{{route('seller.add.comment')}}">
+                        <form method="POST" action="{{route('user.add.comment')}}">
                             @csrf
 
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
                             <input type="hidden" name="model_id" value="{{isset($model->id) ? $model->id :''}}">
-                            <input type="hidden" name="upload_id" value="{{isset($model->avatarImage->id) ? $model->avatarImage->id :''}}">
+                            <input type="hidden" name="upload_id" value="{{isset($model->avatarImage->id) ? $model->avatarImage->id : 0}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">

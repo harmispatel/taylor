@@ -1,4 +1,4 @@
-@extends('seller.layouts.app')
+@extends('frontend.layouts.user_panel')
 
 @section('panel_content')
 <div class="aiz-titlebar mt-2 mb-4">
@@ -40,7 +40,7 @@
                 <div class="product_box_btn_group">
                     <a title="View Details" href="{{route('seller.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
                     <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
-                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->user_id}}</a>
+                    <a title="Modal Id" href="#" class="btn btn-success">#{{@$imagePath->id}}</a>
                     <a title="Albums" href="#" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
@@ -66,7 +66,8 @@
                         <form method="POST" action="{{route('seller.add.comment')}}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
-                            <input type="hidden" name="model_id" value="{{isset($imagePath->user_id) ? $imagePath->id :''}}">
+                            <input type="hidden" name="model_id" value="{{isset($imagePath->id) ? $imagePath->id :''}}">
+                            <input type="hidden" name="upload_id" value="{{isset($model->avatarImage->id) ? $model->avatarImage->id : 0}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">
@@ -120,7 +121,7 @@
         });
         $.ajax({
             type: "POST",
-            url: "{{route('seller.like.model')}}",
+            url: "{{route('like.model')}}",
             data: {"model_id":id,"is_like":isLike,"upload_id":upload_id,"like_type":type},
             dataType: 'json',
             success: function (data) {

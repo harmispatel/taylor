@@ -1681,6 +1681,9 @@ class HomeController extends Controller
         $album_id = decrypt($album_id);
         $imagesId = ModelImage::where('album_id',$album_id)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
+        if(auth()->user()->user_type=='customer'){
+            return view('frontend.user.customer.model.album-post-list',compact('imagesPath'));
+        }
         return view('seller.model.album-post-list',compact('imagesPath'));
     }
     public function verify_access_code(Request $request){
@@ -1767,13 +1770,22 @@ class HomeController extends Controller
             // dd($model);
             $curUser = Auth::user();
             if ($model) {
+
                 $conversation = Conversation::where(['sender_id' => $curUser->id, 'receiver_id' => $model_id])->first();
                 if($conversation) {
+
+                    if(auth()->user()->user_type == 'customer'){
+                        return redirect()->route('user.model_conversations',['conversation_id' => encrypt($conversation->id),'model_id' => $model_id]);
+                    }
                     return redirect()->route('seller.model_conversations',['conversation_id' => encrypt($conversation->id),'model_id' => $model_id]);
                 }
                 else {
+
                     $conversation = Conversation::create(['sender_id' => $curUser->id, 'receiver_id' => $model_id, 'sender_viewed' => 0, 'receiver_viewed' => 0]);
                     if ($conversation) {
+                        if(auth()->user()->user_type == 'customer'){
+                            return redirect()->route('user.model_conversations',['conversation_id' => encrypt($conversation->id),'model_id' => $model_id]);
+                        }
                         return redirect()->route('seller.model_conversations',['conversation_id' => encrypt($conversation->id),'model_id' => $model_id]);
                     }
                 }
@@ -1789,8 +1801,6 @@ class HomeController extends Controller
 
     public function model_conversations(Request $request ,$conversation_id,$model_id)
     {
-        // dd($model_id);
-        // $conversation = Conversation::findOrFail(decrypt($conversation_id));
 
         if($request->isMethod('post')) {
 
@@ -1811,6 +1821,7 @@ class HomeController extends Controller
             return back();
         }
         else {
+
             $conversation = Conversation::findOrFail(decrypt($conversation_id));
 
             if ($conversation->sender_id == Auth::user()->id) {
@@ -1831,6 +1842,9 @@ class HomeController extends Controller
                 }
             }else{
                 $commission = $commission->commission;
+            }
+            if(auth()->user()->user_type=='customer'){
+                return view('frontend.user.customer.model.conversation',compact('conversation','commission','model'));
             }
             // return view('seller.requests.conversations', compact('conversation','request_personalize_product','measurer_avaliablity','measurer','commission'));
             return view('seller.model.conversation.conversation',compact('conversation','commission','model'));
@@ -1853,40 +1867,37 @@ class HomeController extends Controller
     public function model_appointment_create(Request $request)
     {
 
+        if(auth()->user()->user_type=='customer'){
 
-
-    //    $validated = $request->validate([
-    //         'model_commission' => ['required', 'integer'],
-    //         'seller_id' => ['required', 'integer'],
-    //         'model_id' => ['required', 'integer'],
-    //         'appointment_datetime' => ['required', 'integer'],
-    //     ]);
-
-
-
-        $tmpcommission = TemporaryModelCommission::where([
-            ['seller_id', '=', $request->seller_id],
-            ['model_id', '=', $request->model_id]
-        ])->delete();
-
+            $tmpcommission = TemporaryModelCommission::where([
+                ['customer_id', '=', $request->customer_id],
+                ['model_id', '=', $request->model_id]
+            ])->delete();
+        }
+        else{
+            $tmpcommission = TemporaryModelCommission::where([
+                ['seller_id', '=', $request->seller_id],
+                ['model_id', '=', $request->model_id]
+            ])->delete();
+        }
         $requestToModel = RequestToModel::create($request->all());
-        // dd($requestToModel);
-
+        if(auth()->user()->user_type=='customer'){
+            return redirect()->route('user.requests_to_be_model');
+        }
         return redirect()->route('seller.requests_to_be_model');
 
-
-        # code...
     }
+
 
     public function requests_to_be_model()
     {
         $requests = RequestToModel::where('seller_id', auth()->id())->paginate(10);
-        // dd($requests);
-        //$getUserCurrentAddress = Address::where('user_id',Auth::id())->first();
-
-        // dd($getUserCurrentAddress);
-
         return view('seller.model.requests-to-be-model.requests-to-be-model', compact('requests'));
+    }
+    public function customer_requests_to_be_model()
+    {
+        $requests = RequestToModel::with('customer')->where('customer_id', auth()->id())->paginate(10);
+        return view('frontend.user.customer.model.requests-to-be-model', compact('requests'));
     }
 
 
@@ -1949,11 +1960,8 @@ class HomeController extends Controller
     public function nearby_models(Request $request) {
 
         $user1 = Address::find($request->address_id);
-
         $user2 = Address::where('user_id',Auth::id())->first();
-        // dd($user2);
         $earthRadiusKm = 6371; // Approximate radius of the earth in km
-
         $lat1 = $user1->latitude;
         $lon1 = $user1->longitude;
         $lat2 = $user2->latitude;
@@ -1964,16 +1972,10 @@ class HomeController extends Controller
 
         $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon/2) * sin($dLon/2);
         $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-
         $distance = $earthRadiusKm * $c;
-
-
         $data['distance'] =   $distance;
         $data['user_name'] =   $user1->user->name;
-
-
-        // dd($data);
          return response()->json($data);
 
-        }
+    }
 }

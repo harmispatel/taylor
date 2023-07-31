@@ -41,10 +41,10 @@ class ModelLikeController extends Controller
             if($request->like_type=='modelPostLike'){
 
                 $modelLikeDetails=ModelLike::where(['model_id'=>$request->model_id,'like_type'=>'modelPostLike','user_id'=>auth()->user()->id])->first();
-            }else if{
+            }elseif($request->like_type=='modelLike'){
                 $modelLikeDetails=ModelLike::where('like_type','modelLike')->where('model_id',$request->model_id)->where('user_id',auth()->user()->id)->first();
             }
-            else if{
+            elseif($request->like_type=='albumPost'){
                 $modelLikeDetails=ModelLike::where('like_type','albumPost')->where('model_id',$request->model_id)->where('user_id',auth()->user()->id)->first();
             }
             $input['user_id']=auth()->user()->id;

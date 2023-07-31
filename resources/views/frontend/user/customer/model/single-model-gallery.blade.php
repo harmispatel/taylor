@@ -15,7 +15,7 @@
     @if (count($imagesPath) > 0)
     @foreach ($imagesPath as $imagePath)
     @php
-    $likeClass=getModelLikePostWise(@$imagePath->id,auth()->user()->id);
+    $likeClass=getModelLikePostWise(@$imagePath->id,auth()->user()->id,'modelPostLike');
     @endphp
     <div class="col-sm-6 col-md-4  col-xxl-3">
         <div class="card product_box">
@@ -38,20 +38,20 @@
                 <!-- <h5 class="card-title">{{@$imagePath->name}}</h5> -->
                 <div class="product_box_btn_group">
                     <a title="View Details" href="{{route('user.view_model_details',Crypt::encrypt($imagePath->id))}}" class="btn btn-dark"><i class="fa-solid fa-eye"></i></a>
-                    <a title="Hire Modal" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
+                    <a title="Hire Modal" href="{{ route('user.model_conversations_create',['model_id' => encrypt(@$imagePath->id) ])}}" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></a>
                     <a title="Modal Id" href="#" class="btn btn-success">#{{@$id}}</a>
                     <a title="Albums" href="{{route('user.album_list',encrypt(@$id))}}" class="btn btn-warning"><i class="fa-solid fa-image"></i></a>
                 </div>
             </div>
             <div class="product_short_icon">
-                <a class="like{{$i}} {{$likeClass}}" onclick="giveLike({{$i}},{{@$id}},{{@$imagePath->id}})">
+                <a class="like{{$i}} {{$likeClass}}" onclick="giveLikes({{$i}},{{@$id}},{{@$imagePath->id}},{{"'modelPostLike'"}})">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </a>
-                <button class="btn" data-toggle="modal" data-target="#myModal">
+                <button class="btn" data-toggle="modal" data-target="#myModal{{$i}}">
                     <i class="las la-comment"></i>
                 </button>
             </div>
-            <div class="modal" id="myModal">
+            <div class="modal" id="myModal{{$i}}">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -62,10 +62,11 @@
                         </div>
 
                         <!-- Modal body -->
-                        <form method="POST" action="{{route('seller.add.comment')}}">
+                        <form method="POST" action="{{route('user.add.comment')}}">
                             @csrf
                             <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
                             <input type="hidden" name="model_id" value="{{@$id}}">
+                            <input type="hidden" name="upload_id" value="{{isset($imagePath->id) ? $imagePath->id : 0}}">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">
@@ -101,3 +102,32 @@
 
 
 @endsection
+
+<script>
+    function giveLikes(randomNumber,id,upload_id,type=null){
+
+        if ($('.like'+randomNumber).hasClass("active")) {
+            $('.like'+randomNumber).removeClass("active");
+            var isLike=0;
+        }
+        else {
+            $('.like'+randomNumber).addClass("active");
+            var isLike=1;
+        }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "{{route('like.model')}}",
+            data: {"model_id":id,"is_like":isLike,"upload_id":upload_id,"like_type":type},
+            dataType: 'json',
+            success: function (data) {
+            },
+            error: function (data) {
+            }
+        });
+    }
+</script>

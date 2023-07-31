@@ -248,6 +248,12 @@
                                 <span class="aiz-side-nav-text">{{ translate('View All Post') }}</span>
                             </a>
                         </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('user.requests_to_be_model') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.requests_to_be_model'])}}">
+                                <i class="las la-atom aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">{{ translate('Requests To Model') }}</span>
+                            </a>
+                        </li>
                     @endif
                     @if (addon_is_activated('club_point'))
                         <li class="aiz-side-nav-item">
