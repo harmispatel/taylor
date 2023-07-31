@@ -1682,9 +1682,9 @@ class HomeController extends Controller
         $imagesId = ModelImage::where('album_id',$album_id)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
         if(auth()->user()->user_type=='customer'){
-            return view('frontend.user.customer.model.album-post-list',compact('imagesPath'));
+            return view('frontend.user.customer.model.album-post-list',compact('imagesPath','album_id'));
         }
-        return view('seller.model.album-post-list',compact('imagesPath'));
+        return view('seller.model.album-post-list',compact('imagesPath','album_id'));
     }
     public function verify_access_code(Request $request){
         try{
