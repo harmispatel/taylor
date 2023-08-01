@@ -930,7 +930,7 @@ class HomeController extends Controller
         elseif(Auth::user()->user_type == 'delivery_boy'){
             return view('delivery_boys.frontend.dashboard');
         }
-        elseif(Auth::user()->user_type == 'measurer'){
+        elseif(Auth::user()->user_type == 'measurer' || Auth::user()->user_type == 'repair_store'){
             return view('frontend.user.customer.dashboard');
         }
         elseif(Auth::user()->user_type == 'model'){
@@ -1595,9 +1595,36 @@ class HomeController extends Controller
     public function model_gallery()
     {
         $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',0)->pluck('uploaded_image_id'); // get images id
-        // $imagesPath = Upload::whereIn('id', $imagesId)->pluck('file_name')->paginate(3); // get images path
         $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
         return view('frontend.user.model.model-gallery',compact('imagesPath'));
+    }
+    public function album_post_approval()
+    {
+        $imagesId = ModelImage::where('model_id',auth()->id())->where('album_id',0)->pluck('uploaded_image_id'); // get images id
+        $imagesPath = Upload::whereIn('id', $imagesId)->withoutTrashed()->paginate(3); // get images path
+        return view('frontend.user.customer.model.album_post_approval',compact('imagesPath'));
+    }
+    public function approve_post(Request $request,$postId,$approveId)
+    {
+       try {
+
+            $id=Crypt::decrypt($postId);
+            $data['approval']=$approveId;
+            $upload=Upload::find($id);
+            $upload->update($data);
+            $message=($approveId==2) ? 'Post  Approve Successfully' : 'Post
+            Rejected Successfully';
+            if($approveId==2){
+                flash(translate('Post  Approved Successfully'))->success();
+            }else{
+                flash(translate('Post  Rejected Successfully'))->error();
+            }
+            return redirect()->back();
+
+       } catch (\Throwable $th) {
+            flash(translate('Something went Wrong'))->error();
+            return redirect()->back();
+       }
     }
 
     public function model_upload_image(Request $request)
@@ -1609,6 +1636,9 @@ class HomeController extends Controller
             $model_image->album_id = isset($request->album_id) ? $request->album_id : '';
             $model_image->uploaded_image_id = isset($request->photo) ? $request->photo : $request->video ;
             $model_image->save();
+            if(isset($request->upload_type) && ($request->upload_type=='public_upload') ){
+                flash(translate('Wait for Album Owner Approval'))->success();
+            }
             flash(translate('File Uploaded Successfully'))->success();
         }
         catch (\Exception $e) {
@@ -1664,7 +1694,10 @@ class HomeController extends Controller
     public function model_list()
     {
         $models = User::with('avatarImage')->where('user_type', 'model')->paginate(5);
-        if(Auth::user()->user_type == 'customer'){
+        if(Auth::user()->user_type == 'model' ){
+            $models = User::with('avatarImage')->where('id','!=', Auth::user()->id)->where('user_type', 'model')->paginate(5);
+        }
+        if(Auth::user()->user_type == 'customer' || Auth::user()->user_type == 'model' ){
             return view('frontend.user.customer.model.model-list',compact('models'));
         }
         return view('seller.model.model-list',compact('models'));
@@ -1672,7 +1705,7 @@ class HomeController extends Controller
     public function album_list($model_id){
         $model_id = decrypt($model_id);
         $albums=ModelAlbum::latest()->where('model_id',$model_id)->paginate(5);
-        if(Auth::user()->user_type == 'customer'){
+        if(Auth::user()->user_type == 'customer' || Auth::user()->user_type == 'model'){
             return view('frontend.user.customer.model.albums-list',compact('albums'));
         }
         return view('seller.model.albums-list',compact('albums'));

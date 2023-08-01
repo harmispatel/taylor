@@ -338,6 +338,18 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
+                    <a href="{{ route('user.model_list') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.model_list','seller.album_list','seller.album_post_list'])}}">
+                        <i class="las la-atom aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Models List') }}</span>
+                    </a>
+                </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('album-post-approval') }}" class="aiz-side-nav-link {{ areActiveRoutes(['model-albums','view-albums'])}}">
+                        <i class="las la-dollar-sign aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{translate('Public Album Posts Approval')}}</span>
+                    </a>
+                </li>
+                <li class="aiz-side-nav-item">
                     <a href="{{ route('appointment_for_modeling') }}" class="aiz-side-nav-link {{ areActiveRoutes(['appointment_for_modeling'])}}">
                         <i class="las la-dollar-sign aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{translate('Appointment For Modeling')}}</span>

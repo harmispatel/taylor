@@ -23,6 +23,7 @@
                                                 <option value="measurer">Measurer</option>
                                                 <option value="seller">Seller</option>
                                                 <option value="model">Model</option>
+                                                <option value="repair_store">Repair Store</option>
                                             </select>
                                             @if ($errors->has('user_type'))
                                                 <span class="invalid-feedback" role="alert">
@@ -83,7 +84,7 @@
                                             <input type="password" class="form-control" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
                                         </div>
 
-                                        <div class="append_div"> 
+                                        <div class="append_div">
 
                                         </div>
 

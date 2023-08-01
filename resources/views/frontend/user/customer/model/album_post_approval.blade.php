@@ -6,7 +6,7 @@
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class="h3">{{ translate('Model Gallery') }}</h1>
+                <h1 class="h3">{{ translate('Approval Post List') }}</h1>
             </div>
         </div>
     </div>
@@ -29,12 +29,14 @@
                                 <source src="{{ url('/public') . '/' . $imagePath->file_name }}" type="video/mp4">
                             </video>
                         @else
-                            <img src="{{ url('/public') . '/' . $imagePath->file_name }}" class="w-100 shadow-1-strong rounded mb-4"
+                            <img src="{{ url('/public') . '/' . $imagePath->file_name }}" class="w-100 shadow-1-strong rounded h-100"
                             alt="Boat on Calm Water" />
                         @endif
                     </div>
-                    <a href="#" data-href="{{route('delete_model_picture',Crypt::encrypt($imagePath->id))}}" class="btn btn-danger dt_btn  confirm-delete"><i class="fa-solid fa-trash"></i></a>
-                    <button  data-toggle="modal" onclick="openDetailsModel({{isset($imagePath->id) ? $imagePath->id : ''}})" class="btn btn-success add_btn">Add</button>
+                    <a href="{{route('approve_post',['post_id' => Crypt::encrypt($imagePath->id),'approve'=>2])}}"  class="btn btn-success approve_bt"><i class="fa-solid fa-check"></i></a>
+                    @if(@$imagePath->approval==1)
+                        <a href="{{route('approve_post',['post_id' => Crypt::encrypt($imagePath->id),'approve'=>1])}}"  class="btn btn-danger  disapprove_bt"><i class="fa-solid fa-times"></i></a>
+                    @endif
                 </div>
             </div>
         @endforeach
@@ -44,9 +46,7 @@
     </div>
 
 @endsection
-@section('modal')
-    @include('modals.delete_modal')
-@endsection
+
 @section('script')
     <script type="text/javascript">
 

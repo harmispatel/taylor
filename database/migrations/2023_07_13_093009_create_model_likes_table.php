@@ -18,6 +18,7 @@ class CreateModelLikesTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('model_id')->nullable();
             $table->integer('upload_id')->nullable();
+            $table->integer('album_id')->default(0);
             $table->string('like_type')->nullable();
             $table->tinyInteger('is_like')->default(0);
             $table->timestamps();

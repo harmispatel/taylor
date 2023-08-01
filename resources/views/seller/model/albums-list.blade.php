@@ -23,16 +23,10 @@
                                 <td>{{$i}}</td>
                                 <td>{{$value->name}}</td>
                                 <td>{{($value->is_public==1) ? translate('Public') : translate('Private') }}</td>
-                                <td class="text-right">
-                                    @if($value->is_public==1)
-                                        <form action="{{ route('seller.album_post_list',Crypt::encrypt($value->id)) }}" id="album-post-list" method="GET" enctype="multipart/form-data">
-                                            <a  data-toggle="modal"  onclick="openAccessCodeModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
-                                        </form>
-                                    @else
-                                        <a href="{{route('seller.album_post_list',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
-                                    @endif
-                                </td>
-
+                                <td class="text-right"><a href="{{route('seller.album_post_list',Crypt::encrypt($value->id))}}" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a></td>
+                                <!-- <form action="{{ route('seller.album_post_list',Crypt::encrypt($value->id)) }}" id="album-post-list" method="GET" enctype="multipart/form-data">
+                                    <a  data-toggle="modal"  onclick="openAccessCodeModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="{{translate('View Post')}}"><i class="las la-eye"></i></a>
+                                </form> -->
                             </tr>
                             @php $i++; @endphp
                         @endforeach
