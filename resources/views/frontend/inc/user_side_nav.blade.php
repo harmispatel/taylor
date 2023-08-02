@@ -338,7 +338,7 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('user.model_list') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.model_list','seller.album_list','seller.album_post_list'])}}">
+                    <a href="{{ route('user.model_list') }}" class="aiz-side-nav-link {{ areActiveRoutes(['user.model_list','user.album_list','user.album_post_list','user.single_model_gallery'])}}">
                         <i class="las la-atom aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Models List') }}</span>
                     </a>

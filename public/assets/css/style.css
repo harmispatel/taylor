@@ -142,7 +142,7 @@
     justify-content: center;
 }
 
-.approve_bt{
+.modal_box .approve_bt{
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -156,7 +156,7 @@
     border-radius: 50% !important;
 }
 
-.disapprove_bt{
+.modal_box .disapprove_bt{
     position: absolute;
     bottom: 20px;
     right: 20px;

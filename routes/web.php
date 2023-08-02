@@ -329,6 +329,7 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::get('album_post_list/{id}', [HomeController::class, 'album_post_list'])->name('user.album_post_list');
         Route::get('album-post-approval', [HomeController::class, 'album_post_approval'])->name('album-post-approval');
         Route::get('post-approval/{post_id}/{approve}', [HomeController::class, 'approve_post'])->name('approve_post');
+        Route::get('view_post_detail/{id}', [HomeController::class, 'view_post_detail'])->name('user.view_post_detail');
     });
     Route::controller(ModelAlbumsController::class)->group(function () {
 

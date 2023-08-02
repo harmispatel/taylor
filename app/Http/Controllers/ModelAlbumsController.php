@@ -15,7 +15,7 @@ class ModelAlbumsController extends Controller
      */
     public function index()
     {
-        $albums=ModelAlbum::latest()->paginate(5);
+        $albums=ModelAlbum::where('model_id',Auth()->user()->id)->latest()->paginate(5);
         return view('frontend.user.model.model-albums',compact('albums'));
     }
 

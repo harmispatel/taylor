@@ -79,7 +79,8 @@ class AutoDetectLanguage
         $data = $ipdata->lookup('50.174.42.230');
         // $data = $ipdata->lookup(request()->ip());
         if(session()->get('localelang') == null){
-            session()->put('localelang', $data['languages'][0]['code']);
+
+           // session()->put('localelang', $data['languages'][0]['code']);
         }
         // dd(session()->get('localelang'));
 

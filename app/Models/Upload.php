@@ -27,6 +27,10 @@ class Upload extends Model
     {
     	return $this->belongsTo(ModelDetail::class,'id','upload_id');
     }
+    public function model_images()
+    {
+    	return $this->belongsTo(ModelImage::class,'id','uploaded_image_id');
+    }
 
 
 }
