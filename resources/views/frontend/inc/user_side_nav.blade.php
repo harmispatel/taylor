@@ -314,14 +314,26 @@
                 </li>
 
                 @if(Auth::user()->user_type == 'measurer')
-
                 <li class="aiz-side-nav-item">
                     <a href="{{route('measurer.availablity')}}" class="aiz-side-nav-link {{ areActiveRoutes(['measurer.availablity'])}}">
                         <i class="las la-calendar-check aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{ translate('Availability') }}</span>
                     </a>
                 </li>
-
+                @endif
+                @if(Auth::user()->user_type == 'repair_store')
+                    <li class="aiz-side-nav-item">
+                        <a href="{{route('repairStore.service')}}" class="aiz-side-nav-link {{ areActiveRoutes(['repairStore.service'])}}">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Service') }}</span>
+                        </a>
+                    </li>
+                    <li class="aiz-side-nav-item">
+                        <a href="{{route('repairStore.availablity')}}" class="aiz-side-nav-link {{ areActiveRoutes(['repairStore.availablity'])}}">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Availability') }}</span>
+                        </a>
+                    </li>
                 @endif
 
                 @if (auth()->user()->user_type == 'model')

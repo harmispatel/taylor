@@ -930,8 +930,11 @@ class HomeController extends Controller
         elseif(Auth::user()->user_type == 'delivery_boy'){
             return view('delivery_boys.frontend.dashboard');
         }
-        elseif(Auth::user()->user_type == 'measurer' || Auth::user()->user_type == 'repair_store'){
+        elseif(Auth::user()->user_type == 'measurer'){
             return view('frontend.user.customer.dashboard');
+        }
+        elseif(Auth::user()->user_type == 'repair_store'){
+            return view('frontend.user.repair_store.dashboard');
         }
         elseif(Auth::user()->user_type == 'model'){
             return view('frontend.user.customer.dashboard');
@@ -1462,12 +1465,7 @@ class HomeController extends Controller
 
     public function measurer_availablity() {
 
-        // dd('asd');
-
         $measurer_avaliablity = MeasurerAvailablityHours::where('measurer_id',Auth::user()->id)->get();
-
-        //  dd($measurer_avaliablity->isEmpty());
-
         if(auth()->user()->user_type == 'seller'){
             return view('backend.sellers.seller_as_measurer_commission.measurer-availablity',compact('measurer_avaliablity'));
         }else{
@@ -1625,7 +1623,7 @@ class HomeController extends Controller
             return redirect()->back();
 
        } catch (\Throwable $th) {
-             echo "<pre>"; print_r($th->getMessage());exit;
+
             flash(translate('Something went Wrong'))->error();
             return redirect()->back();
        }
@@ -1767,7 +1765,7 @@ class HomeController extends Controller
     public function all_model_gallery(Request $request)
     {
 
-        $imagesId = ModelImage::where('album_id',0)->pluck('uploaded_image_id'); // get images id
+        $imagesId = ModelImage::where('album_id',0)->orWhere('approval',3)->pluck('uploaded_image_id'); // get images id
         $imagesPath = Upload::whereIn('id', $imagesId)->get(); // get images path
         $post='';
         $post=$request->all();

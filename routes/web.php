@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController};
+use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController};
 
 /*
   |--------------------------------------------------------------------------
@@ -338,6 +338,13 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('/getAlbumDetails', 'getAlbumDetails')->name('getAlbumDetails');
         Route::get('/delete-albums/{id}', 'destroy')->name('delete-albums');
         Route::get('/view-albums/{id}', 'show')->name('view-albums');
+    });
+    Route::controller(RepairStoreController::class)->group(function () {
+        Route::get('repairStore/availablity','index')->name('repairStore.availablity');
+        Route::get('repairStore/service','serviceList')->name('repairStore.service');
+        Route::post('repairStore/service/store','storeService')->name('store.service');
+        Route::post('repairStore/availablity/store','store')->name('repairStore.availablity.save');
+        Route::post('repairStore/getServiceDetails', 'getServiceDetails')->name('getAlbumDetails');
     });
 
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
