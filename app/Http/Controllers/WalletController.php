@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Wallet;
+use App\Models\{Wallet,RepairerWithdrawRequest,RepairerOrder};
 use Auth;
 use Session;
 
@@ -10,6 +10,15 @@ class WalletController extends Controller
 {
     public function index()
     {
+        if(Auth::user()->user_type=='repair_store'){
+            $finalAmount=0;
+            $totalAmount=0;
+            $repairer_withdraw_requests = RepairerWithdrawRequest::where('user_id', Auth::user()->id)->latest()->paginate(9);
+            $totalAmount=RepairerOrder::where('repairer_id',Auth::user()->id)->where('payment_status',3)->sum('service_cost');
+            $withdrawRequestAmount=RepairerWithdrawRequest::where('user_id',Auth::user()->id)->sum('amount');
+            $finalAmount=$totalAmount - $withdrawRequestAmount;
+            return view('frontend.user.repair_store.money_withdraw_requests.index', compact('repairer_withdraw_requests','finalAmount'));
+        }
         $wallets = Wallet::where('user_id', Auth::user()->id)->latest()->paginate(9);
         return view('frontend.user.wallet.index', compact('wallets'));
     }

@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController};
+use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController,RepairerWithdrawRequestController};
 
 /*
   |--------------------------------------------------------------------------
@@ -105,9 +105,10 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('/verification-confirmation/{code}', 'verification_confirmation')->name('email.verification.confirmation');
 });
 Route::controller(CustomerController::class)->group(function () {
+
     Route::post('measurer/conversations/create', 'measurer_conversations_create')->name('measurer.conversations.create');
     Route::get('measurer/appointments/create', 'appointment_create')->name('measurer.appointment.create');
-    Route::match(['get', 'post'], 'measurer/conversations/show/{id}',  'measurer_conversations')->name('measurer.conversations');
+    Route::match(['get', 'post'], 'measurer/conversations/show/{id}','measurer_conversations')->name('measurer.conversations');
 });
 
 Route::group(['middleware' => ['app_auto_language']], function() {
@@ -218,6 +219,7 @@ Route::controller(CartController::class)->group(function () {
 Route::controller(PaypalController::class)->group(function () {
     Route::get('/paypal/payment/done', 'getDone')->name('payment.done');
     Route::get('/paypal/payment/cancel', 'getCancel')->name('payment.cancel');
+    Route::post('payment/makeRepairOrderPayment', 'makeRepairOrderPayment')->name('payment.makeRepairOrderPayment');
 });
 //Paypal END
 
@@ -287,6 +289,7 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('/new-user-verification', 'new_verify')->name('user.new.verify');
         Route::post('/new-user-email', 'update_email')->name('user.change.email');
         Route::post('/user/update-profile', 'userProfileUpdate')->name('user.profile.update');
+        Route::post('/user/bank-details', 'updateBankDetails')->name('update.bank_details');
         Route::get('/appointments', 'appointments')->name('appointments');
         Route::get('/customer-direct-appointments', 'customer_direct_appointments_of_measurments')->name('customer_direct_appointments_of_measurments');
         Route::get('/completed-measures', 'completedMeasures')->name('completed_measures');
@@ -342,10 +345,15 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
     Route::controller(RepairStoreController::class)->group(function () {
         Route::get('repairStore/availablity','index')->name('repairStore.availablity');
         Route::get('repairStore/service','serviceList')->name('repairStore.service');
+        Route::get('repairStore/myOrders','myOrders')->name('repairStore.myOrders');
         Route::post('repairStore/service/store','storeService')->name('store.service');
         Route::post('repairStore/availablity/store','store')->name('repairStore.availablity.save');
         Route::post('repairStore/getServiceDetails', 'getServiceDetails')->name('getAlbumDetails');
+        Route::post('repairStore/updateOrderStatus', 'updateOrderStatus')->name('updateOrderStatus');
+        Route::post('repairStore/acceptOrder', 'acceptOrder')->name('repairStore.acceptOrder');
+        Route::get('/delete-service/{id}', 'destroy')->name('delete.service');
     });
+
 
     Route::get('/all-notifications', [NotificationController::class, 'index'])->name('all-notifications');
 
@@ -387,6 +395,12 @@ Route::group(['middleware' => ['verified', 'unbanned']], function() {
     Route::controller(WalletController::class)->group(function () {
         Route::get('/wallet', 'index')->name('wallet.index');
         Route::post('/recharge', 'recharge')->name('wallet.recharge');
+    });
+
+    // Money Withdraw Requests
+    Route::controller(RepairerWithdrawRequestController::class)->group(function () {
+
+        Route::post('repairer/money-withdraw-request/store', 'store')->name('repairer.money_withdraw_request.store');
     });
 
     // Support Ticket

@@ -47,7 +47,7 @@ use App\Models\Address;
 use App\Models\CombinedOrder;
 use App\Models\MeasurerAvailablityHours;
 use App\Models\OrderDetail;
-use App\Models\{ProductForum,ModelDetail,ModelAlbum};
+use App\Models\{ProductForum,ModelDetail,ModelAlbum,BankDetails};
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
@@ -953,6 +953,7 @@ class HomeController extends Controller
             return view('delivery_boys.frontend.profile');
         }
         else{
+
             return view('frontend.user.profile');
         }
     }
@@ -981,6 +982,28 @@ class HomeController extends Controller
 
         flash(translate('Your Profile has been updated successfully!'))->success();
         return back();
+    }
+    public function updateBankDetails(Request $request){
+
+        try{
+            $input=$request->except('_token');
+            $bankDetails=BankDetails::where('user_id',auth()->user()->id)->first();
+            if(empty($bankDetails)){
+                $input['user_id']=auth()->user()->id;
+                BankDetails::insert($input);
+            }
+            else{
+                $bankDetails->update($input);
+            }
+            flash(translate('Bank Details updated successfully!'))->success();
+            return redirect()->back();
+        }catch (\Throwable $th) {
+            // echo "<pre>";print_r($th->getMessage());exit;
+            // for check error  $th->getMessage();
+            flash(translate('Something went Wrong'))->error();
+            return redirect()->back();
+         }
+
     }
 
     public function flash_deal_details($slug)
@@ -2027,4 +2050,7 @@ class HomeController extends Controller
          return response()->json($data);
 
     }
+    // public function nearby_repairer(Request $request) {
+
+    // }
 }

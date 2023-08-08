@@ -1,4 +1,7 @@
 @extends('frontend.layouts.user_panel')
+@php
+    $bankDetails=App\Models\BankDetails::where('user_id',auth()->user()->id)->first();
+@endphp
 
 @section('panel_content')
     <div class="aiz-titlebar mt-2 mb-4">
@@ -131,7 +134,62 @@
             </div>
         </div>
     </div> --}}
-
+     <!-- Payment System -->
+    @if(auth()->user()->user_type=='repair_store')
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0 h6">{{ translate('Bank Account Verification')}}</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('update.bank_details') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <label class="col-md-3 col-form-label" for="bank_name">{{ translate('Bank Name') }}</label>
+                        <div class="col-md-9">
+                            <input type="text" name="bank_name" value="{{isset($bankDetails->bank_name) ? $bankDetails->bank_name : '' }}" id="bank_name"
+                                class="form-control mb-3" placeholder="{{ translate('Bank Name')}}">
+                            @error('phone')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label" for="bank_account_name">{{ translate('Bank Account Name') }}</label>
+                        <div class="col-md-9">
+                            <input type="text" name="bank_account_name" value="{{isset($bankDetails->bank_account_name) ? $bankDetails->bank_account_name : '' }}" id="bank_account_name"
+                                class="form-control mb-3" placeholder="{{ translate('Bank Account Name')}}">
+                            @error('bank_account_name')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label" for="bank_account_number">{{ translate('Bank Account Number') }}</label>
+                        <div class="col-md-9">
+                            <input type="text" name="bank_account_number" value="{{isset($bankDetails->bank_account_number) ? $bankDetails->bank_account_number : '' }}" id="bank_account_number"
+                                class="form-control mb-3" placeholder="{{ translate('Bank Account Number')}}">
+                            @error('bank_account_number')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3 col-form-label" for="ifsc_code">{{ translate('IFSC Code') }}</label>
+                        <div class="col-md-9">
+                            <input type="text" name="ifsc_code" value="{{isset($bankDetails->ifsc_code) ? $bankDetails->ifsc_code : '' }}" id="ifsc_code"
+                                class="form-control mb-3" placeholder="{{ translate('IFSC Code')}}">
+                            @error('ifsc_code')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group mb-0 text-right">
+                        <button type="submit" class="btn btn-primary">{{translate('Update Bank Details')}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 
     <!-- Change Email -->
     <form action="{{ route('user.change.email') }}" method="POST">
@@ -174,7 +232,7 @@
 
 @section('script')
     <script type="text/javascript">
-        
+
         $('.new-email-verification').on('click', function() {
             $(this).find('.loading').removeClass('d-none');
             $(this).find('.default').addClass('d-none');
@@ -195,9 +253,9 @@
     </script>
 
     @if (get_setting('google_map') == 1)
-        
+
         @include('frontend.partials.google_map')
-        
+
     @endif
 
 @endsection

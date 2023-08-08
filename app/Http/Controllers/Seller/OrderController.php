@@ -25,13 +25,15 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+
         $payment_status = null;
         $delivery_status = null;
         $sort_search = null;
-        $orders = DB::table('orders')
+        // $orders = DB::table('orders')
+        $orders = Order::with('user')
             ->orderBy('id', 'desc')
             ->where('seller_id', Auth::user()->id)
-            ->select('orders.id')
+            //->select('orders.id')
             ->distinct();
 
         if ($request->payment_status != null) {
@@ -60,6 +62,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
+
         $order = Order::findOrFail(decrypt($id));
         $order_shipping_address = json_decode($order->shipping_address);
         $delivery_boys = User::where('city', $order_shipping_address->city)
@@ -71,19 +74,20 @@ class OrderController extends Controller
         return view('seller.orders.show', compact('order', 'delivery_boys'));
     }
 
+
     // Update Delivery Status`
     public function update_delivery_status(Request $request)
     {
-      
+
            $shop = Shop::where('user_id',Auth::id())->first();
-           
+
            $order = Order::findOrFail($request->order_id);
 
 
            $customer_shipping_address = json_decode($order->shipping_address, true);
 
 
-        
+
           if(isset($shop)){
             $shop_address = $shop->address;
           }
@@ -92,7 +96,7 @@ class OrderController extends Controller
             $url_shop = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($shop_address) . '&key=' . env('MAP_API_KEY');
 
             $url_customer = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($customer_shipping_address['address']) . '&key=' . env('MAP_API_KEY');
-            
+
 
             // Make the API request using Guzzle
 
@@ -100,7 +104,7 @@ class OrderController extends Controller
                 'timeout' => 600, // Set the timeout value in seconds (e.g., 30 seconds)
             ]);
             // $client = new \GuzzleHttp\Client();
-            
+
             $response_shop = $client->get($url_shop);
             $data_shop = json_decode($response_shop->getBody(), true);
 
@@ -166,7 +170,7 @@ class OrderController extends Controller
 
         $order->save();
 
-       
+
         if ($request->status == 'cancelled' && $order->payment_type == 'wallet') {
             $user = User::where('id', $order->user_id)->first();
             $user->balance += $order->grand_total;

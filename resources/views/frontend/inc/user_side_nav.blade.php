@@ -323,6 +323,12 @@
                 @endif
                 @if(Auth::user()->user_type == 'repair_store')
                     <li class="aiz-side-nav-item">
+                        <a href="{{route('repairStore.myOrders')}}" class="aiz-side-nav-link {{ areActiveRoutes(['repairStore.myOrders'])}}">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('My Orders') }}</span>
+                        </a>
+                    </li>
+                    <li class="aiz-side-nav-item">
                         <a href="{{route('repairStore.service')}}" class="aiz-side-nav-link {{ areActiveRoutes(['repairStore.service'])}}">
                             <i class="las la-calendar-check aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Service') }}</span>

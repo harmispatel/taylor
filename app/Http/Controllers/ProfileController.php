@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\{User,BankDetails};
 use Hash;
 
 class ProfileController extends Controller
@@ -74,7 +74,6 @@ class ProfileController extends Controller
             flash(translate('Sorry! the action is not permitted in demo '))->error();
             return back();
         }
-
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -86,10 +85,11 @@ class ProfileController extends Controller
             flash(translate('Your Profile has been updated successfully!'))->success();
             return back();
         }
-
         flash(translate('Sorry! Something went wrong.'))->error();
         return back();
     }
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -626,10 +626,8 @@ $(document).on('click', '.f-m-btn-nearby', function(){
            }
    });
 
-
-   //  alert(customerID);
-   // $('#find-measurer-modal [name="request_id"]').val(requestID);
 });
+
 
 
 $('.request-to-personliser-form').submit(function (e) {

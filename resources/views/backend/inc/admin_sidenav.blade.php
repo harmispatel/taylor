@@ -432,12 +432,36 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="aiz-side-nav-item">
+                        <a href="#" class="aiz-side-nav-link">
+                            <i class="las la-user aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Repairer') }}</span>
+                            <span class="aiz-side-nav-arrow"></span>
+                        </a>
+                        <ul class="aiz-side-nav-list level-2">
+                            <!-- <li class="aiz-side-nav-item">
+                                <a href="{{ route('sellers.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['sellers.index', 'sellers.create', 'sellers.edit', 'sellers.payment_history','sellers.approved','sellers.profile_modal','sellers.show_verification_request'])}}">
+                                    <span class="aiz-side-nav-text">{{ translate('All Repairer') }}</span>
+                                </a>
+                            </li> -->
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('sellers.payment_histories') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Payouts') }}</span>
+                                </a>
+                            </li>
+                            <li class="aiz-side-nav-item">
+                                <a href="{{ route('repairer.withdraw_requests_all') }}" class="aiz-side-nav-link">
+                                    <span class="aiz-side-nav-text">{{ translate('Payout Requests') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
 
 
 
 
-                
+
                 <!--Blog System-->
                 @if(Auth::user()->user_type == 'admin' || in_array('23', json_decode(Auth::user()->staff->role->permissions)))
                     <li class="aiz-side-nav-item">
@@ -452,7 +476,7 @@
                                     <span class="aiz-side-nav-text">{{ translate('All Models') }}</span>
                                 </a>
                             </li>
-                         
+
                         </ul>
                     </li>
                 @endif

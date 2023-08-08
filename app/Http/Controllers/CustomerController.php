@@ -177,15 +177,16 @@ class CustomerController extends Controller
 
             $measurer = User::findOrFail($request->measurer_id);
 
-
             $curUser = Auth::user();
             if ($measurer) {
 
                 $conversation = Conversation::where(['sender_id' => $curUser->id, 'receiver_id' => $request->measurer_id])->first();
                 if($conversation) {
+
                     return redirect()->route('measurer.conversations', ['id' => encrypt($conversation->id), 'measurer_id' => $request->measurer_id, 'request_id' => $request->request_id]);
                 }
                 else {
+
                     $conversation = Conversation::create(['sender_id' => $curUser->id, 'receiver_id' => $request->measurer_id, 'sender_viewed' => 0, 'receiver_viewed' => 0]);
                     if ($conversation) {
                         return redirect()->route('measurer.conversations', ['id' => encrypt($conversation->id), 'measurer_id' => $request->measurer_id, 'request_id' => $request->request_id]);
@@ -205,8 +206,6 @@ class CustomerController extends Controller
     public function measurer_conversations(Request $request, $id) {
 
         // dd('measurer_conversations');
-
-
         $measurer_avaliablity = MeasurerAvailablityHours::where('measurer_id',$request->measurer_id)->get();
 
 

@@ -19,18 +19,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
+
         $user = Auth::user();
         $addresses = $user->addresses;
-
         $profile_type = ProfileType::get();
-
         $user_profiles = UserProfile::with('profile')->where('user_id',Auth::id())->get();
-
-        // dd($profile);
-
-
-        //  dd($profile);
-
         return view('seller.profile.index', compact('user','addresses','profile_type','user_profiles'));
     }
 
@@ -69,7 +62,6 @@ class ProfileController extends Controller
         }
 
         $user->avatar_original = $request->photo;
-
         $shop = $user->shop;
 
         if($shop){

@@ -93,7 +93,7 @@
           $.post('{{ route('withdraw_request.payment_modal') }}',{_token:'{{ @csrf_token() }}', id:id, seller_withdraw_request_id:seller_withdraw_request_id}, function(data){
               $('#payment-modal-content').html(data);
               $('#payment_modal').modal('show', {backdrop: 'static'});
-              $('.demo-select2-placeholder').select2();
+            //  $('.demo-select2-placeholder').select2();
           });
       }
 

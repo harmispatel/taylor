@@ -15,16 +15,19 @@
 @section('panel_content')
 
 {{-- @dd($commission) --}}
+
 <div class="card">
-        <div class="form-group row col-md-4">
-            <div class="col-md-4">
-                <label>Commission Price For Model</label>
+        @if($conversation->receiver->user_type != 'repair_store')
+            <div class="form-group row col-md-4">
+                <div class="col-md-4">
+                    <label>Commission Price For Model</label>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="set_commission" class="form-control"
+                        value="{{ @$commission }}" disabled>
+                </div>
             </div>
-            <div class="mb-3">
-                <input type="text" name="set_commission" class="form-control"
-                    value="{{ @$commission }}" disabled>
-            </div>
-        </div>
+        @endif
 
 
 
@@ -75,8 +78,10 @@
                     required=""></textarea>
             </div>
             <div class="form-group mb-0 text-right">
-                <a class="btn btn-primary" data-toggle="modal" data-target="#create-appointment-modal">Create
+                @if($conversation->receiver->user_type != 'repair_store')
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#create-appointment-modal">Create
                     Appointment</a>
+                @endif
                 <button type="submit" class="btn btn-primary">Send</button>
             </div>
         </form>

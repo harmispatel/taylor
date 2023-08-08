@@ -20,7 +20,7 @@ use App\Http\Controllers\Seller\ConversationController;
 use App\Http\Controllers\Seller\NotificationController;
 use App\Http\Controllers\Seller\SupportTicketController;
 use App\Http\Controllers\Seller\SellerRequestController;
-use App\Http\Controllers\{MeasurerController,ModelCommentController,ModelLikeController};
+use App\Http\Controllers\{MeasurerController,ModelCommentController,ModelLikeController,RepairStoreController};
 use App\Http\Controllers\ProductForumController;
 
 
@@ -91,6 +91,14 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
         Route::post('/orders/update_delivery_status', 'update_delivery_status')->name('orders.update_delivery_status');
         Route::post('/orders/update_delivery_time', 'update_delivery_time')->name('orders.update_delivery_time');
         Route::post('/orders/update_payment_status', 'update_payment_status')->name('orders.update_payment_status');
+    });
+    Route::controller(RepairStoreController::class)->group(function () {
+
+
+        Route::post('repairStore/serviceDetails','repairerServiceDetails')->name('repairer.serviceDetails');
+        Route::post('repairStore/bookService','bookService')->name('repairStore.bookService');
+        Route::post('repairStore/gerServiceCost','gerServiceCost')->name('repairStore.gerServiceCost');
+
     });
 
 
@@ -169,7 +177,8 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
     Route::controller(SellerRequestController::class)->group(function () {
         Route::get('/requests', 'index')->name('requests.index');
         Route::get('/nearbyMeasurers/{id}', 'nearby_measurers')->name('requests.nearby_measurers');
-
+        Route::get('/nearbyRepairer/{id}', 'nearby_repairer')->name('requests.nearby_repairer');
+        Route::get('repairStore/repair/request','repairRequest')->name('repair.orders.request');
 
         Route::get('measurer/appointment/show/{id}', 'appointment_show')->name('measurer.appointment.show');
         Route::post('membership/request', 'membership_request_store')->name('membership_request_store');
@@ -213,7 +222,8 @@ Route::group(['prefix' => 'seller', 'middleware' => ['seller', 'verified', 'user
     });
     Route::controller(ModelLikeController::class)->group(function () {
         Route::post('modelLike','store')->name('like.model');
-     });
+    });
+
 
 });
 

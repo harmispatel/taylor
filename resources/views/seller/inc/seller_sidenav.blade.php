@@ -183,6 +183,12 @@
                         <span class="aiz-side-nav-text">{{ translate('Orders') }}</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('seller.repair.orders.request') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller.repair.orders.request']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Repair Order Request') }}</span>
+                    </a>
+                </li>
 
                 @php
                         @$requests = \App\Models\RequestPersonaliseProduct::with('addresses','customer', 'product', 'appointment:id,request_id,appointment_status')->doesntHave('appointment')->where(function($query) use($request){

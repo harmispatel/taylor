@@ -60,6 +60,7 @@
 
             </div>
         </form>
+        @elseif(auth()->user()->user_type == 'repair_store')
 
         @else
 
@@ -115,8 +116,6 @@
                                     <div class="mob mb-2"> <label class="text-grey mr-4">To</label> <input class="ml-1"
                                             type="time" name="to[]" disabled> </div>
 
-
-
                                 </div>
 
 
@@ -130,7 +129,6 @@
                                             type="time" name="to[]" disabled> </div>
 
 
-
                                 </div>
 
                                 <div class="mb-2 row justify-content-between px-3">
@@ -140,8 +138,6 @@
                                             type="time" name="from[]" disabled> </div>
                                     <div class="mob mb-2"> <label class="text-grey mr-4">To</label> <input class="ml-1"
                                             type="time" name="to[]" disabled> </div>
-
-
 
                                 </div>
 
@@ -153,9 +149,6 @@
                                             type="time" name="from[]" disabled> </div>
                                     <div class="mob mb-2"> <label class="text-grey mr-4">To</label> <input class="ml-1"
                                             type="time" name="to[]" disabled> </div>
-
-
-
                                 </div>
 
 
@@ -261,15 +254,16 @@
                     <div>
                         <img src="" id="preview-img" alt="" height="100" width="100" style="display: none" >
                     </div>
-
-                    <div class="form-group">
-                        <label for="file">
-                            <i class="las la-paperclip" style="font-size: 30px"></i>
-                        </label>
-                       <input type="file" name="file" id="file" accept="image/*" hidden>
-                    </div>
+                    @if(auth()->user()->user_type != 'repair_store')
+                        <div class="form-group">
+                            <label for="file">
+                                <i class="las la-paperclip" style="font-size: 30px"></i>
+                            </label>
+                        <input type="file" name="file" id="file" accept="image/*" hidden>
+                        </div>
+                    @endif
                     <div class="form-group mb-0 text-right">
-                        @if (auth()->user()->user_type != 'measurer' && auth()->user()->user_type != 'model')
+                        @if (auth()->user()->user_type != 'measurer' && auth()->user()->user_type != 'model' && auth()->user()->user_type != 'repair_store')
                             <a class="btn btn-primary" data-toggle="modal" data-target="#create-appointment-modal">Create
                                 Appointment</a>
                         @endif
@@ -326,6 +320,7 @@
                             <input type="text" name="measurer_commission" class="form-control" value="{{ @$commission}}"  hidden>
                             <input type="hidden" name="measurer_id" value="{{ encrypt(\Request::get('measurer_id')) }}">
                             <input type="hidden" name="request_id" value="{{ encrypt(\Request::get('request_id')) }}">
+
                             <button type="submit" class="btn btn-primary btn-block fw-600">Create Appointment</button>
                         </div>
                     </form>

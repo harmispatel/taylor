@@ -27,7 +27,7 @@
                                 <td>{{$value->service_price}}</td>
                                 <td class="text-right">
                                 <button onclick="openAlbumsModel({{$value->id}})" class="btn btn-soft-info btn-icon btn-circle btn-sm" title="Edit"><i class="las la-edit"></i></button>
-                                <a href="#" data-href="{{route('delete-albums',Crypt::encrypt($value->id))}}"  class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="Delete"><i class="las la-trash"></i></a>
+                                <a href="#" data-href="{{route('delete.service',Crypt::encrypt($value->id))}}"  class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="Delete"><i class="las la-trash"></i></a>
                                 </td>
 
                             </tr>

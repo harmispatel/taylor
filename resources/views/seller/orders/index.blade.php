@@ -77,8 +77,14 @@
                                     <td>
                                         @php
                                             $status = $order->delivery_status;
+                                            $addrdressId=isset($order->user->customer_addresses->id) ? $order->user->customer_addresses->id : '';
                                         @endphp
                                         {{ translate(ucfirst(str_replace('_', ' ', $status))) }}
+
+                                        <button type="button" data-toggle="modal" data-target="#find-nearby-repairer"  data-order-id="{{$order->id}}" data-customer-id="{{$order->user_id}}"  data-address-id="{{$addrdressId}}"    class="f-r-btn-nearby btn btn-soft-primary mr-2 find-measurer-btn fw-600" >
+                                            <i class="las la-arrow-right"></i>
+                                            <span class="d-none d-md-inline-block">{{ translate('Find nearby repairer for customer')}}</span>
+                                        </button>
                                     </td>
                                     <td>
                                         @if ($order->payment_status == 'paid')
@@ -106,7 +112,43 @@
             </div>
         @endif
     </div>
+    <div class="modal fade" id="find-nearby-repairer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-zoom" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title fw-600">{{ translate('Find Nearby Repairer')}}</h6>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
+                    <div class="p-3">
+                        <form class="form-default find-measurer-form" role="form" action="{{ route('seller.repairer.serviceDetails') }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>{{ translate('Nearby Repairer')}}</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="mb-3">
+                                        <select class="form-control"  name="repairer_id" id="repairer-dropdown" required>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="order_id" id="order_id">
+                            <input type="hidden" name="customer_id" id="customer_id">
+                            <div class="mb-5">
+                                <button type="submit" class="btn btn-primary btn-block fw-600">Repairer account details</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -114,5 +156,30 @@
         function sort_orders(el){
             $('#sort_orders').submit();
         }
+        $(document).on('click', '.f-r-btn-nearby', function(){
+            var customerID = $(this).data('customer-id');
+            var addressID = $(this).data('address-id');
+            var orderId = $(this).data('order-id');
+            $('#order_id').val(orderId);
+            $('#customer_id').val(customerID);
+            var url = "{{ route('seller.requests.nearby_repairer', ":id") }}";
+            url = url.replace(':id', customerID);
+            $.ajax({
+                type:'GET',
+                url: url,
+                data:{user_id:customerID,address_id:addressID},
+                success:function(data){
+                    $('#repairer-dropdown').html('');
+                        $.each(data.repairer, function (key, value) {
+                            $("#repairer-dropdown").append('<option value="' + value
+                                .user_id + '">' + value.name + '    ( '  +value.distance.toFixed(2)+' Km )</option>');
+                        });
+
+
+                    }
+            });
+
+        });
+
     </script>
 @endsection

@@ -36,7 +36,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Seller\SellerRequestController;
 use App\Http\Controllers\SellerController;
-use App\Http\Controllers\SellerWithdrawRequestController;
+use App\Http\Controllers\{SellerWithdrawRequestController,RepairerWithdrawRequestController};
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\SubscriberController;
@@ -80,8 +80,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
             Route::get('/all/models', 'allModels')->name('all.models');
 
         });
-    
+    // Repairer
+        Route::controller(RepairerWithdrawRequestController::class)->group(function () {
+            Route::get('/admin/withdraw_requests_all', 'index')->name('repairer.withdraw_requests_all');
+            Route::post('repairer/withdraw_request/payment_modal', 'payment_modal')->name('repairer.withdraw_request.payment_modal');
 
+        });
     // Brand
     Route::resource('brands', BrandController::class);
     Route::controller(BrandController::class)->group(function () {
