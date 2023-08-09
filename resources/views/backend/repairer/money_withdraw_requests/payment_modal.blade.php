@@ -9,6 +9,7 @@
       <table class="table table-striped table-bordered" >
           <tbody>
                 <tr>
+                    <td>{{ translate('Admin To Pay') }}</td>
                     <td>{{ single_price($repairer_withdraw_requests->amount) }}</td>
                 </tr>
                 <tr>

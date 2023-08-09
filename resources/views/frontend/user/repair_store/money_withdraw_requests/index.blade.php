@@ -1,7 +1,12 @@
 @extends('frontend.layouts.user_panel')
 
 @section('panel_content')
-
+    @php
+        $getAdminCommission=0;
+        $getAdminCommission=App\Models\User::where('user_type','admin')->first()->commission;
+    @endphp
+    <input type="hidden" name="admin_commission_percentage" id="admin_commission_percentage" value="{{$getAdminCommission}}">
+    <input type="hidden" name="final_amount" id="final_amount" value="{{$finalAmount}}">
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
         <div class="col-md-6">
@@ -91,7 +96,15 @@
                                     <label>{{ translate('Amount')}} <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="number" lang="en" class="form-control mb-3" name="amount" min="{{ get_setting('minimum_seller_amount_withdraw') }}"  placeholder="{{ translate('Amount') }}" required>
+                                    <input type="number" lang="en" class="form-control mb-3" name="amount" id="amount" min="50" max="{{$finalAmount}}"  placeholder="{{ translate('Amount') }}" required>
+                                </div>
+                            </div>
+                            <div class="row pay_to_admin" style="display:none;">
+                                <div class="col-md-3">
+                                    <label>{{ translate('Pay To Admin')}}{{'('.$getAdminCommission.'%)'}}</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="number" disabled lang="en" class="form-control mb-3"  id="pay_to_admin">
                                 </div>
                             </div>
                             <div class="row">
@@ -121,15 +134,27 @@
 
 @section('script')
     <script type="text/javascript">
+        $('#request_modal').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        })
         function show_request_modal(){
             $('#request_modal').modal('show');
         }
-
         function show_message_modal(id){
             $.post('{{ route('withdraw_request.message_modal') }}',{_token:'{{ @csrf_token() }}', id:id}, function(data){
                 $('#message_modal .modal-content').html(data);
                 $('#message_modal').modal('show', {backdrop: 'static'});
             });
         }
+        $("input").keyup(function(){
+           var  amount=$(this).val();
+           var  adminCommissionPercentage=$('#admin_commission_percentage').val();
+           var adminCommission = amount *  adminCommissionPercentage / 100 ;
+           adminCommission=Math.round(adminCommission);
+           $('#pay_to_admin').val(adminCommission);
+           $('.pay_to_admin').show();
+            //$("#amount").css("background-color", "green");
+        });
+
     </script>
 @endsection

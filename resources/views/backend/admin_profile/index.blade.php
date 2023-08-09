@@ -24,6 +24,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="name">{{translate('Commission')}}</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" placeholder="{{translate('Commission')}}{{'(%)'}}" name="commission" value="{{ Auth::user()->commission }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="new_password">{{translate('New Password')}}</label>
                         <div class="col-sm-9">
                             <input type="password" class="form-control" placeholder="{{translate('New Password')}}" name="new_password">

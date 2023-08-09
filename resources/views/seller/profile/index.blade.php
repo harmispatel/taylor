@@ -175,14 +175,14 @@
         </div> --}}
         {{-- <div class="row">
                     <label class="col-md-3 col-form-label">{{ translate('Bank Payment') }}</label>
-        <div class="col-md-9">
-            <label class="aiz-switch aiz-switch-success mb-3">
-                <input value="1" name="bank_payment_status" type="checkbox" @if ($user->shop->bank_payment_status == 1)
-                checked @endif>
-                <span class="slider round"></span>
-            </label>
-        </div>
-    </div> --}}
+            <div class="col-md-9">
+                <label class="aiz-switch aiz-switch-success mb-3">
+                    <input value="1" name="bank_payment_status" type="checkbox" @if ($user->shop->bank_payment_status == 1)
+                    checked @endif>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div> --}}
     <div class="row">
         <label class="col-md-3 col-form-label" for="bank_name">{{ translate('Bank Name') }}</label>
         <div class="col-md-9">

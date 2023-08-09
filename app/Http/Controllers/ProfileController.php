@@ -15,6 +15,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
+
         return view('backend.admin_profile.index');
     }
 
@@ -70,11 +71,15 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         if(env('DEMO_MODE') == 'On'){
             flash(translate('Sorry! the action is not permitted in demo '))->error();
             return back();
         }
         $user = User::findOrFail($id);
+        if(auth()->user()->user_type=='admin'){
+            $user->commission = $request->commission;
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         if($request->new_password != null && ($request->new_password == $request->confirm_password)){
