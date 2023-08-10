@@ -83,7 +83,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Repairer
         Route::controller(RepairerWithdrawRequestController::class)->group(function () {
             Route::get('/admin/withdraw_requests_all', 'index')->name('repairer.withdraw_requests_all');
+            Route::get('/admin/repairer/payouts', 'payouts')->name('repairer.payouts');
             Route::post('repairer/withdraw_request/payment_modal', 'payment_modal')->name('repairer.withdraw_request.payment_modal');
+            Route::post('repairer/withdraw_request/message_modal', 'message_modal')->name('repairer.withdraw_request.message_modal');
 
         });
     // Brand
@@ -359,6 +361,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     });
 
     Route::post('/pay_to_seller', [CommissionController::class, 'pay_to_seller'])->name('commissions.pay_to_seller');
+    Route::post('/pay_to_repairer', [CommissionController::class, 'payToRepairer'])->name('commissions.pay_to_repairer');
 
     //Reports
     Route::controller(ReportController::class)->group(function () {

@@ -966,6 +966,9 @@ class HomeController extends Controller
         }
 
         $user = Auth::user();
+        if(auth()->user()->user_type=='repair_store'){
+            $user->website = $request->website;
+        }
         $user->name = $request->name;
         $user->address = $request->address;
         $user->country = $request->country;

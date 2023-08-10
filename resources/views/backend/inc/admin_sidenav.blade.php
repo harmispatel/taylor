@@ -445,7 +445,7 @@
                                 </a>
                             </li> -->
                             <li class="aiz-side-nav-item">
-                                <a href="{{ route('sellers.payment_histories') }}" class="aiz-side-nav-link">
+                                <a href="{{ route('repairer.payouts') }}" class="aiz-side-nav-link">
                                     <span class="aiz-side-nav-text">{{ translate('Payouts') }}</span>
                                 </a>
                             </li>

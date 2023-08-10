@@ -19,4 +19,7 @@ class RepairerOrder extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+    public function repairOrderPayment(){
+        return $this->belongsTo(repairOrderPayment::class,'id','repairOrder_id');
+    }
 }

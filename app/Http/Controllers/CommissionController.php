@@ -6,7 +6,7 @@ use App\Models\CommissionHistory;
 use Illuminate\Http\Request;
 use App\Models\SellerWithdrawRequest;
 use App\Models\Seller;
-use App\Models\Payment;
+use App\Models\{Payment,RepairerWithdrawRequestPayment,RepairerWithdrawRequest};
 use App\Models\Shop;
 use Session;
 
@@ -57,6 +57,25 @@ class CommissionController extends Controller
         }
     }
 
+    public function payToRepairer(Request $request)
+    {
+        try{
+            $input=$request->except('_token','payment_withdraw');
+            RepairerWithdrawRequestPayment::insert($input);
+            $repairer_withdraw_request = RepairerWithdrawRequest::findOrFail($request->withdraw_request_id);
+            $repairer_withdraw_request->status = '2';
+            $repairer_withdraw_request->viewed = '2';
+            $repairer_withdraw_request->save();
+            flash(translate('Payment completed'))->success();
+            return redirect()->route('repairer.withdraw_requests_all');
+
+        }catch (\Throwable $th) {
+            // for check error  $th->getMessage();
+            flash(translate('Something went Wrong'))->error();
+            return redirect()->route('repairer.withdraw_requests_all');
+        }
+    }
+
     //redirects to this method after successfull seller payment
     public function seller_payment_done($payment_data, $payment_details){
         $shop = Shop::findOrFail($payment_data['shop_id']);
@@ -98,7 +117,7 @@ class CommissionController extends Controller
                 $orderDetail->payment_status = 'paid';
                 $orderDetail->save();
                 $commission_percentage = 0;
-                
+
                 if(get_setting('vendor_commission_activation')){
                     if (get_setting('category_wise_commission')) {
                         $commission_percentage = $orderDetail->product->category->commision_rate;

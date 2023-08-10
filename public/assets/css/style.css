@@ -169,3 +169,49 @@
     padding: 5px !important;
     border-radius: 50% !important;
 }
+
+.repair_member{
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+}
+
+.dropdown-menu{
+    top: 60px !important;
+    transform: none !important;
+    height: 150px;
+    overflow: auto;
+}
+
+.repair_dropdown .dropdown-toggle{
+    background: #0277BD;
+    color: #fff !important;
+}
+
+.dropdown-menu ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.dropdown-menu ul li{
+    padding: 5px;
+}
+
+.repair_img img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.repair_info h3{
+    font-size: 16px;
+    margin: 0;
+}
+.repair_info p{
+    font-size: 14px;
+    margin: 0;
+}

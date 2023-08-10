@@ -58,6 +58,14 @@
                         <input type="password" class="form-control" placeholder="{{ translate('Confirm Password') }}" name="confirm_password">
                     </div>
                 </div>
+                @if(Auth::user()->user_type=='repair_store')
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">{{ translate('Website') }}</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" placeholder="website" name="website" value="{{ Auth::user()->website }}">
+                        </div>
+                    </div>
+                @endif
 
             </div>
         </div>

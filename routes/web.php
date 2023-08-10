@@ -346,6 +346,7 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::get('repairStore/availablity','index')->name('repairStore.availablity');
         Route::get('repairStore/service','serviceList')->name('repairStore.service');
         Route::get('repairStore/myOrders','myOrders')->name('repairStore.myOrders');
+        Route::get('repairStore/paymentHistory','paymentHistory')->name('repairStore.paymentHistory');
         Route::post('repairStore/service/store','storeService')->name('store.service');
         Route::post('repairStore/availablity/store','store')->name('repairStore.availablity.save');
         Route::post('repairStore/getServiceDetails', 'getServiceDetails')->name('getAlbumDetails');

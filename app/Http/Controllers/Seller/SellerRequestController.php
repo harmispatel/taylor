@@ -73,14 +73,14 @@ class SellerRequestController extends Controller
             $user = User::find($request->user_id);
             $latitude  =       isset($address->latitude) ? $address->latitude : 1.0000;
             $longitude =       isset($address->longitude) ? $address->longitude : 1.0000;
-            $nearUser  =       DB::table("users")->join('addresses', 'addresses.user_id', '=', 'users.id');
-            $nearUser  =       $nearUser->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+            $nearUser  =       DB::table("users")->join('addresses', 'addresses.user_id', '=', 'users.id')->join('uploads', 'uploads.user_id', '=', 'users.id','left');
+            $nearUser  =       $nearUser->select("*",'uploads.file_name',DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                             * cos(radians(addresses.latitude)) * cos(radians(addresses.longitude) - radians(" . $longitude . "))
                             + sin(radians(" .$latitude. ")) * sin(radians(addresses.latitude))) AS distance"))->where("users.id","!=",$user->id);
             $nearUser  =       $nearUser->having('distance', '<', 20000);
             $nearUser  =       $nearUser->where('users.user_type', 'repair_store');
             $nearUser  =       $nearUser->orderBy('distance', 'asc');
-            $data['repairer'] =       $nearUser->get();
+            $data['repairer'] = $nearUser->get();
             return response()->json($data);
         }
         catch (\Exception $e) {

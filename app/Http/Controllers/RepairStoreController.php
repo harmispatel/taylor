@@ -162,7 +162,18 @@ class RepairStoreController extends Controller
             $orders=RepairerOrder::with('seller','service','product')->where('repairer_id',auth()->user()->id)->latest()->paginate(10);
             return view('frontend.user.repair_store.orders.orders',compact('orders'));
         }catch (\Throwable $th) {
+            flash(translate('something went Wrong'))->error();
+            return redirect()->back();
+        }
+    }
+    public function paymentHistory(){
+        try{
 
+            $paymentHistory=RepairerOrder::with('seller','service','repairOrderPayment')->where('payment_status','!=',1)->where('repairer_id',auth()->user()->id)->latest()->paginate(10);
+            return view('frontend.user.repair_store.money_withdraw_requests.payment-history',compact('paymentHistory'));
+        }catch (\Throwable $th) {
+            flash(translate('something went Wrong'))->error();
+            return redirect()->back();
         }
     }
     public function updateOrderStatus(Request $request){
