@@ -936,6 +936,9 @@ class HomeController extends Controller
         elseif(Auth::user()->user_type == 'repair_store'){
             return view('frontend.user.repair_store.dashboard');
         }
+        elseif(Auth::user()->user_type == 'delivery_store'){
+            return view('frontend.user.delivery_store.dashboard');
+        }
         elseif(Auth::user()->user_type == 'model'){
             return view('frontend.user.customer.dashboard');
         }

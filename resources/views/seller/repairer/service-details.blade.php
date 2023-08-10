@@ -5,6 +5,7 @@
     <div class="card">
         <div class="card-header">
             <h1 class="h2 fs-16 mb-0">{{ translate('Repairer Service Details') }}</h1>
+            <a title="Start Conversation" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$repairerId) ])}}" class="btn btn-primary">{{ translate('Start Conversation') }}</a>
         </div>
 
         <div class="card-body">
@@ -73,10 +74,11 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <button type="submit" class="btn btn-primary">{{translate('Book Service')}}</button>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">{{translate('Book Service')}}</button>
+                    </div>
                 </div>
             </form>
-            <a title="Start Conversation" href="{{ route('seller.model_conversations_create',['model_id' => encrypt(@$repairerId) ])}}" class="btn btn-primary">{{ translate('Start Conversation') }}</a>
         </div>
     </div>
 @endsection

@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController,RepairerWithdrawRequestController};
+use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController,RepairerWithdrawRequestController,DeliveryStoreController};
 
 /*
   |--------------------------------------------------------------------------
@@ -353,6 +353,10 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('repairStore/updateOrderStatus', 'updateOrderStatus')->name('updateOrderStatus');
         Route::post('repairStore/acceptOrder', 'acceptOrder')->name('repairStore.acceptOrder');
         Route::get('/delete-service/{id}', 'destroy')->name('delete.service');
+    });
+    Route::controller(DeliveryStoreController::class)->group(function () {
+        Route::get('deliveryStore/availablity','index')->name('deliveryStore.availablity');
+        Route::post('deliveryStore/availablity/store','store')->name('deliveryStore.availablity.save');
     });
 
 

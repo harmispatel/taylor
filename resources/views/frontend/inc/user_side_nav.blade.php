@@ -347,7 +347,14 @@
                         </a>
                     </li>
                 @endif
-
+                @if(Auth::user()->user_type == 'delivery_store')
+                    <li class="aiz-side-nav-item">
+                        <a href="{{route('deliveryStore.availablity')}}" class="aiz-side-nav-link {{ areActiveRoutes(['deliveryStore.availablity'])}}">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Availability') }}</span>
+                        </a>
+                    </li>
+                @endif
                 @if (auth()->user()->user_type == 'model')
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('model_gallery') }}" class="aiz-side-nav-link {{ areActiveRoutes(['model_gallery'])}}">

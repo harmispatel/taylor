@@ -19,11 +19,12 @@
 
                                         <div class="form-group">
                                             <select name="user_type" id="user_type" class="form-control aiz-selectpicker" required>
-                                                <option value="customer">Customer</option>
-                                                <option value="measurer">Measurer</option>
-                                                <option value="seller">Seller</option>
-                                                <option value="model">Model</option>
-                                                <option value="repair_store">Repair Store</option>
+                                                <option value="customer">{{ translate('Customer')}}</option>
+                                                <option value="measurer">{{ translate('Measurer')}}</option>
+                                                <option value="seller">{{ translate('Seller')}}</option>
+                                                <option value="model">{{ translate('Model')}}</option>
+                                                <option value="repair_store">{{ translate('Repair Store')}}</option>
+                                                <option value="delivery_store">{{ translate('Delivery Store')}}</option>
                                             </select>
                                             @if ($errors->has('user_type'))
                                                 <span class="invalid-feedback" role="alert">
