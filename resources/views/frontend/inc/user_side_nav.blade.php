@@ -25,18 +25,20 @@
                         <span class="aiz-side-nav-text">{{ translate('Dashboard') }}</span>
                     </a>
                 </li>
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('completed_measures') }}" class="aiz-side-nav-link">
-                        <i class="las la-calendar-check aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Completed Measures') }}</span>
-                    </a>
-                </li>
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('direct_completed_measures') }}" class="aiz-side-nav-link">
-                        <i class="las la-calendar-check aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Direct Completed Measures') }}</span>
-                    </a>
-                </li>
+                @if(Auth::user()->user_type  != 'delivery_store')
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('completed_measures') }}" class="aiz-side-nav-link">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Completed Measures') }}</span>
+                        </a>
+                    </li>
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('direct_completed_measures') }}" class="aiz-side-nav-link">
+                            <i class="las la-calendar-check aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Direct Completed Measures') }}</span>
+                        </a>
+                    </li>
+                @endif
                 @if(Auth::user()->user_type == 'measurer')
 
                 <li class="aiz-side-nav-item">
@@ -45,9 +47,6 @@
                         <span class="aiz-side-nav-text">{{ translate('Appointments') }} <span class="indirect_measurments"></span></span>
                     </a>
                 </li>
-
-
-
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('direct-measurer-appointments') }}" class="aiz-side-nav-link {{ areActiveRoutes(['direct-measurer-appointments'])}}">
                         <i class="las la-calendar-check aiz-side-nav-icon"></i>
@@ -61,7 +60,6 @@
                         <span class="aiz-side-nav-text">{{ translate('Appointments') }}</span>
                     </a>
                 </li>
-
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('customer_direct_appointments_of_measurments') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_direct_appointments_of_measurments'])}}">
                         <i class="las la-calendar-check aiz-side-nav-icon"></i>
@@ -145,8 +143,8 @@
                 @else
 
                 @php
-                $delivery_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('delivery_viewed', 0)->get()->count();
-                $payment_status_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('payment_status_viewed', 0)->get()->count();
+                    $delivery_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('delivery_viewed', 0)->get()->count();
+                    $payment_status_viewed = App\Models\Order::where('user_id', Auth::user()->id)->where('payment_status_viewed', 0)->get()->count();
                 @endphp
                 @if(Auth::user()->user_type == 'customer')
                 <li class="aiz-side-nav-item">
@@ -173,21 +171,21 @@
                     </a>
                 </li>
                 @endif
+                @if(Auth::user()->user_type  != 'delivery_store')
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('wishlists.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wishlists.index'])}}">
+                            <i class="la la-heart-o aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Wishlist') }}</span>
+                        </a>
+                    </li>
 
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('wishlists.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['wishlists.index'])}}">
-                        <i class="la la-heart-o aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Wishlist') }}</span>
-                    </a>
-                </li>
-
-                <li class="aiz-side-nav-item">
-                    <a href="{{ route('compare') }}" class="aiz-side-nav-link {{ areActiveRoutes(['compare'])}}">
-                        <i class="la la-refresh aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">{{ translate('Compare') }}</span>
-                    </a>
-                </li>
-
+                    <li class="aiz-side-nav-item">
+                        <a href="{{ route('compare') }}" class="aiz-side-nav-link {{ areActiveRoutes(['compare'])}}">
+                            <i class="la la-refresh aiz-side-nav-icon"></i>
+                            <span class="aiz-side-nav-text">{{ translate('Compare') }}</span>
+                        </a>
+                    </li>
+                @endif
                 @if(get_setting('classified_product') == 1)
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('customer_products.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_products.index', 'customer_products.create', 'customer_products.edit'])}}">

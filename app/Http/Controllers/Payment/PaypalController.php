@@ -7,7 +7,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerPackageController;
 use App\Http\Controllers\SellerPackageController;
 use App\Http\Controllers\Seller\SellerRequestController;
-use App\Http\Controllers\WalletController;
+use App\Http\Controllers\{WalletController,CustomerController};
 use Illuminate\Http\Request;
 use App\Models\CombinedOrder;
 use App\Models\CustomerPackage;
@@ -50,8 +50,10 @@ class PaypalController extends Controller
                 $amount = Session::get('payment_data')['amount'];
             }
             elseif (Session::get('payment_type') == 'repair_order_payment') {
-
                 $amount = Session::get('payment_data')['amount'];
+            }
+            elseif (Session::get('payment_type') == 'store_purchase_ticket_payment') {
+                $amount = Session::get('userDetails')['amount'];
             }
             elseif (Session::get('payment_type') == 'customer_package_payment') {
                 $customer_package = CustomerPackage::findOrFail(Session::get('payment_data')['customer_package_id']);
@@ -90,7 +92,6 @@ class PaypalController extends Controller
             // If call returns body in response, you can get the deserialized version from the result attribute of the response
             return Redirect::to($response->result->links[1]->href);
         }catch (\Exception $ex) {
-           echo "<pre>"; print_r($ex->getMessage());exit;
             flash(translate('Something was wrong'))->error();
             return redirect()->route('home');
         }
@@ -153,6 +154,10 @@ class PaypalController extends Controller
                 elseif (Session::get('payment_type') == 'repair_order_payment') {
                     return (new SellerRequestController)->repairOrder_payment_done($request->session()->get('payment_data'), json_encode($response));
                 }
+                elseif (Session::get('payment_type') == 'store_purchase_ticket_payment') {
+
+                    return (new CustomerController)->purchase_ticket_payment_done($request->session()->get('userDetails'), json_encode($response));
+                }
                 elseif ($request->session()->get('payment_type') == 'wallet_payment') {
                     return (new WalletController)->wallet_payment_done($request->session()->get('payment_data'), json_encode($response));
                 }
@@ -162,9 +167,11 @@ class PaypalController extends Controller
                 elseif ($request->session()->get('payment_type') == 'seller_package_payment') {
                     return (new SellerPackageController)->purchase_payment_done($request->session()->get('payment_data'), json_encode($response));
                 }
+
             }
         }catch (\Exception $ex) {
-
+            echo "<pre>"; print_r($ex->getMessage());exit;
+            return redirect()->route('dashboard');
         }
     }
 }

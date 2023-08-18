@@ -213,7 +213,7 @@ class RepairStoreController extends Controller
             // send mail to seller for order confirmation
             $subject='Order Confirmation';
             $to='';
-           // $to=$emailData['email'];
+            $to=$emailData['email'];
             Mail::send(
                 'emails.repairer_order.confirm_order',['data' =>$data],
                 function ($message) use ($to,$subject) {
@@ -226,7 +226,7 @@ class RepairStoreController extends Controller
             flash(translate('Order Updated Successfully!'))->success();
             return redirect()->back();
         }catch (\Exception $e) {
-            echo "<pre>";print_r($e->getMessage());exit;
+
             flash(translate('something went Wrong'))->error();
             return redirect()->back();
         }

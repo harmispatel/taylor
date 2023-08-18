@@ -8,12 +8,17 @@ use App\Models\Message;
 use App\Models\RequestAppointment;
 use App\Models\RequestMeasurement;
 use App\Models\RequestPersonaliseProduct;
-use App\Models\TemporaryMeasurerCommission;
+use App\Models\{TemporaryMeasurerCommission,PurchaseTicketPaymentHistory,PurchaseTicketHistory};
 use Illuminate\Http\Request;
 use App\Models\Customer;
-use App\Models\User;
+use App\Models\{User,Brand};
+use Session;
+use PDF;
+use QrCode;
+use Mail;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
+use  App\Http\Controllers\Payment\PaypalController;
 
 class CustomerController extends Controller
 {
@@ -46,6 +51,121 @@ class CustomerController extends Controller
         //
     }
 
+    public function purchaseStoreTicket(Request $request){
+        try{
+
+                $qr_slug='ticket';
+                $ticketNumber=$this->genratetoken(10);
+                $qr_name = $qr_slug."_".time()."_qr.png";
+                $pdfFileName = 'ticket'."_".time().".pdf";
+                $upload_path = public_path('uploads/ticket_qr/'.$qr_name);
+                QrCode::format('png')->size(200)->generate($ticketNumber, $upload_path);
+                $data = ['ticketNumber' => $ticketNumber,'qr_name'=> $qr_name];
+                $pdf = PDF::loadView('frontend.user.downloads.ticket', $data);
+                $path = 'public/uploads/ticket_pdf/';
+                $pdf->save($path  .$pdfFileName);
+                $input=$request->except('_token','document');
+            if( $request->hasFile('document')){
+                if ($request->file('document')->isValid()){
+                    $file = $request->file('document');
+                    $name = $file->getClientOriginalName();
+                    $file->move('public/uploads/documents/' , $name);
+                    $input['documents'] = $name;
+                }
+            }
+
+
+            $input['amount']=3;
+            Session::put('userDetails',$input);
+            Session::put('payment_type','store_purchase_ticket_payment');
+            return (new PaypalController)->pay();
+        }catch (\Exception $e) {
+            flash(translate('something went Wrong'))->error();
+            return redirect()->back();
+        }
+
+    }
+    function genratetoken($length = 32)
+    {
+        // Function for Genrate random Token
+        $string = 'A0B1C2D3E4F5G6H7I8J9KLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $max = strlen($string) - 1;
+        $token = '';
+        for($i = 0; $i < $length; $i++)
+        {
+            $token .= $string[mt_rand(0, $max)];
+        }
+        return $token;
+    }
+    public function purchase_ticket_payment_done($payment_data, $payment)
+    {
+        try{
+
+            $paymentDetails=json_decode($payment);
+            $purchaseTicketPayment=new PurchaseTicketPaymentHistory;
+            $purchaseTicketPayment->user_id=auth()->user()->id;
+            $purchaseTicketPayment->amount=$payment_data['amount'];
+            $purchaseTicketPayment->payment_details=$payment;
+            $purchaseTicketPayment->status=isset($paymentDetails->result->status) ? $paymentDetails->result->status : '';
+            $purchaseTicketPayment->payment_method=$payment_data['payment_option'];
+            $purchaseTicketPayment->save();
+
+            if(isset($paymentDetails->result->status) && $paymentDetails->result->status=='COMPLETED'){
+                $userData=Session::get('userDetails');
+                $qr_slug='ticket';
+                $ticketNumber=$this->genratetoken(10);
+                $qr_name = $qr_slug."_".time()."_qr.png";
+                $pdfFileName = 'ticket'."_".time().".pdf";
+                $upload_path = public_path('uploads/ticket_qr/'.$qr_name);
+                QrCode::format('png')->size(200)->generate($ticketNumber, $upload_path);
+                $data = ['ticketNumber' => $ticketNumber,'qr_name'=> $qr_name,'address'=>$userData['address']];
+                $pdf = PDF::loadView('frontend.user.downloads.ticket', $data);
+                $path = 'public/uploads/ticket_pdf/';
+                $pdf->save($path  .$pdfFileName);
+
+                $currentDate=date('Y-m-d', strtotime('+1 year'));
+                $purchaseTicketData['name']=$userData['name'];
+                $purchaseTicketData['email']=$userData['email'];
+                $purchaseTicketData['address']=$userData['address'];
+                $purchaseTicketData['address1']=$userData['address1'];
+                $purchaseTicketData['address2']=$userData['address2'];
+                $purchaseTicketData['longitude']=$userData['longitude'];
+                $purchaseTicketData['latitude']=$userData['latitude'];
+                $purchaseTicketData['phone']=$userData['phone'];
+                $purchaseTicketData['document']=$userData['documents'];
+                $purchaseTicketData['amount']=$userData['amount'];
+                $purchaseTicketData['user_id']=auth()->user()->id;
+                $purchaseTicketData['ticket_validity']=$currentDate;
+                $purchaseTicketData['ticket_number']=$ticketNumber;
+                $purchaseTicketData['ticket_qrcode_image']=$qr_name;
+                PurchaseTicketHistory::insert($purchaseTicketData);
+
+                // send mail to seller for order confirmation
+                $ticketFile = public_path('uploads/ticket_pdf/'.$pdfFileName);
+                $subject='Purchased Ticket';
+                $to='';
+                $to=auth()->user()->email;
+                Mail::send(
+                    'emails.purchase_ticket.ticket',['data' =>$data],
+                    function ($message) use ($to,$subject,$ticketFile) {
+                        $message->from(env('MAIL_FROM_ADDRESS'));
+                        //$message->to('harmistest@gmail.com');
+                        $message->to($to);
+                        $message->subject($subject);
+                        $message->attach($ticketFile);
+                    }
+                );
+            }
+
+            flash(translate('Payment done successful'))->success();
+            return redirect()->route('dashboard');
+        }
+        catch (\Throwable $th) {
+            echo "<pre>";print_r($th->getMessage());exit;
+            flash(translate('something went wrong'))->errors();
+            return redirect()->route('dashboard');
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *

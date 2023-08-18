@@ -107,6 +107,7 @@ Route::controller(VerificationController::class)->group(function () {
 Route::controller(CustomerController::class)->group(function () {
 
     Route::post('measurer/conversations/create', 'measurer_conversations_create')->name('measurer.conversations.create');
+    Route::post('purchase/store/ticket', 'purchaseStoreTicket')->name('purchase.store.ticket');
     Route::get('measurer/appointments/create', 'appointment_create')->name('measurer.appointment.create');
     Route::match(['get', 'post'], 'measurer/conversations/show/{id}','measurer_conversations')->name('measurer.conversations');
 });

@@ -500,10 +500,12 @@
             }
         }
         function requestToPersonliser(){
+
             if('{{ \Auth::check() }}' !== '1')
                 return $('#login_modal').modal();
 
             if(checkAddToCartValidity()) {
+                alert("fgf");
                 // $('#request-to-personaliser').modal()
                 $('#request-for-product').modal()
             }

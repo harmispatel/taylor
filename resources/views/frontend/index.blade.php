@@ -2,6 +2,7 @@
 
 @section('content')
     {{-- Categories , Sliders . Today's deal --}}
+
     <div class="home-banner-area mb-4 pt-3">
         <div class="container">
             <div class="row gutters-10 position-relative">
@@ -59,6 +60,7 @@
 
                 @if($num_todays_deal > 0)
                 <div class="col-lg-2 order-3 mt-3 mt-lg-0">
+                    <button onclick="openUserDetailsForm()" class="btn btn-primary w-100 mb-3">{{translate('Buy Store Ticket')}}</button>
                     <div class="bg-white rounded shadow-sm">
                         <div class="bg-soft-primary rounded-top p-3 d-flex align-items-center justify-content-center">
                             <span class="fw-600 fs-16 mr-2 text-truncate">
@@ -546,7 +548,9 @@
         </div>
     </div>
 @endsection
-
+@section('modal')
+    @include('frontend.partials.buy_store_ticket_modal')
+@endsection
 @section('script')
     <script>
         $(document).ready(function(){
@@ -571,5 +575,9 @@
                 AIZ.plugins.slickCarousel();
             });
         });
+       // function openUserDetailsForm(){
+           // alert("sdsd");
+          // $('#buy-store-ticket-modal').modal('show');
+      //  }
     </script>
 @endsection

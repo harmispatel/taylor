@@ -256,6 +256,7 @@ return [
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'GeoIPLocation' => Victorybiz\GeoIPLocation\Facades\GeoIPLocationFacade::class,
         'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class
+
     ],
 
 ];

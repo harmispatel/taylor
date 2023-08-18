@@ -242,10 +242,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
                         <div class="mb-5">
                             <input type="hidden" name="request_id">
                             <button type="submit" class="btn btn-primary btn-block fw-600">Start Conversation</button>
