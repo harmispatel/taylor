@@ -50,7 +50,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\MeasurerController;
 use App\Http\Controllers\ProductForumController;
-use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController,RepairerWithdrawRequestController,DeliveryStoreController};
+use App\Http\Controllers\{RequestController,ModelAlbumsController,ModelLikeController,ModelCommentController,RepairStoreController,RepairerWithdrawRequestController,DeliveryStoreController,StoreTicketController};
 
 /*
   |--------------------------------------------------------------------------
@@ -354,6 +354,14 @@ Route::group(['middleware' => ['user', 'verified', 'unbanned']], function() {
         Route::post('repairStore/updateOrderStatus', 'updateOrderStatus')->name('updateOrderStatus');
         Route::post('repairStore/acceptOrder', 'acceptOrder')->name('repairStore.acceptOrder');
         Route::get('/delete-service/{id}', 'destroy')->name('delete.service');
+    });
+    Route::controller(StoreTicketController::class)->group(function () {
+        Route::get('store/ticket','index')->name('ticket.index');
+        Route::get('view/ticket/{id}','viewTicketDetails')->name('view.ticket');
+        Route::get('download/ticket/{id}','downloadTicket')->name('download.ticket');
+        Route::post('ticket/getDetails', 'getTicketDetails')->name('getTicketDetails');
+        Route::post('ticket/updateTicketDetails', 'updateTicketDetails')->name('updateTicketDetails');
+        Route::get('/nearbyDeliveryStore/{id}', 'nearby_delivery_store')->name('requests.nearby_delivery_store');
     });
     Route::controller(DeliveryStoreController::class)->group(function () {
         Route::get('deliveryStore/availablity','index')->name('deliveryStore.availablity');

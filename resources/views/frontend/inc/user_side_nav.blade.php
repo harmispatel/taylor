@@ -154,7 +154,6 @@
                         @if($delivery_viewed > 0 || $payment_status_viewed > 0)<span class="badge badge-inline badge-success">{{ translate('New') }}</span>@endif
                     </a>
                 </li>
-
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('digital_purchase_history.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['digital_purchase_history.index'])}}">
                         <i class="las la-download aiz-side-nav-icon"></i>
@@ -162,7 +161,12 @@
                     </a>
                 </li>
                 @endif
-
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('ticket.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['ticket.index','view.ticket'])}}">
+                    <i class="las la-ticket-alt aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('Store Tickets') }}</span>
+                    </a>
+                </li>
                 @if (addon_is_activated('refund_request'))
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('customer_refund_request') }}" class="aiz-side-nav-link {{ areActiveRoutes(['customer_refund_request'])}}">

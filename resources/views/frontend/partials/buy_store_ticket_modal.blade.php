@@ -231,6 +231,35 @@
             </div>
         </div>
     </div>
+<!--openAccessCodeModel Model -->
+<div class="modal fade" id="openAccessCodeModel" >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ translate('Access Code') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                @csrf
+                <input type="hidden" name="albumId" id="albumId">
+                <div class="modal-body">
+                    <span id="error_message" ></span>
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <label class="m-0">{{ translate(' Ticket Code')}}</label>
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" name="access_code" id="access_code" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group text-right m-0">
+                        <button type="button" onclick="verifyAccessCode()" class="btn btn-sm btn-primary mt-3">{{translate('Verify')}}</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
 @section('script')
     <script type="text/javascript">
         function openUserDetailsForm(){
@@ -243,9 +272,14 @@
             $('#payment_model').modal('show');
 
         }
-
+        function openAccessCodeModel(){
+            if('{{ \Auth::check() }}' !== '1'){
+                return $('#login_modal').modal();
+            }
+            $('#openAccessCodeModel').modal('show');
+        }
     </script>
-    @if(get_setting('google_map') == 0)
-        @include('frontend.partials.google_map')
-    @endif
+        @if(get_setting('google_map') == 0)
+            @include('frontend.partials.google_map')
+        @endif
 @endsection

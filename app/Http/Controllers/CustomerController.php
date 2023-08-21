@@ -53,18 +53,7 @@ class CustomerController extends Controller
 
     public function purchaseStoreTicket(Request $request){
         try{
-
-                $qr_slug='ticket';
-                $ticketNumber=$this->genratetoken(10);
-                $qr_name = $qr_slug."_".time()."_qr.png";
-                $pdfFileName = 'ticket'."_".time().".pdf";
-                $upload_path = public_path('uploads/ticket_qr/'.$qr_name);
-                QrCode::format('png')->size(200)->generate($ticketNumber, $upload_path);
-                $data = ['ticketNumber' => $ticketNumber,'qr_name'=> $qr_name];
-                $pdf = PDF::loadView('frontend.user.downloads.ticket', $data);
-                $path = 'public/uploads/ticket_pdf/';
-                $pdf->save($path  .$pdfFileName);
-                $input=$request->except('_token','document');
+            $input=$request->except('_token','document');
             if( $request->hasFile('document')){
                 if ($request->file('document')->isValid()){
                     $file = $request->file('document');
@@ -73,8 +62,6 @@ class CustomerController extends Controller
                     $input['documents'] = $name;
                 }
             }
-
-
             $input['amount']=3;
             Session::put('userDetails',$input);
             Session::put('payment_type','store_purchase_ticket_payment');
@@ -139,7 +126,6 @@ class CustomerController extends Controller
                 $purchaseTicketData['ticket_number']=$ticketNumber;
                 $purchaseTicketData['ticket_qrcode_image']=$qr_name;
                 PurchaseTicketHistory::insert($purchaseTicketData);
-
                 // send mail to seller for order confirmation
                 $ticketFile = public_path('uploads/ticket_pdf/'.$pdfFileName);
                 $subject='Purchased Ticket';
@@ -149,7 +135,6 @@ class CustomerController extends Controller
                     'emails.purchase_ticket.ticket',['data' =>$data],
                     function ($message) use ($to,$subject,$ticketFile) {
                         $message->from(env('MAIL_FROM_ADDRESS'));
-                        //$message->to('harmistest@gmail.com');
                         $message->to($to);
                         $message->subject($subject);
                         $message->attach($ticketFile);
@@ -161,7 +146,6 @@ class CustomerController extends Controller
             return redirect()->route('dashboard');
         }
         catch (\Throwable $th) {
-            echo "<pre>";print_r($th->getMessage());exit;
             flash(translate('something went wrong'))->errors();
             return redirect()->route('dashboard');
         }

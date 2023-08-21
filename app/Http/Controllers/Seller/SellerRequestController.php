@@ -77,7 +77,7 @@ class SellerRequestController extends Controller
             $nearUser  =       $nearUser->select("*",'uploads.file_name',DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                             * cos(radians(addresses.latitude)) * cos(radians(addresses.longitude) - radians(" . $longitude . "))
                             + sin(radians(" .$latitude. ")) * sin(radians(addresses.latitude))) AS distance"))->where("users.id","!=",$user->id);
-            $nearUser  =       $nearUser->having('distance', '<', 20000);
+            $nearUser  =       $nearUser->having('distance', '<', config('global.rediusRange'));
             $nearUser  =       $nearUser->where('users.user_type', 'repair_store');
             $nearUser  =       $nearUser->orderBy('distance', 'asc');
             $data['repairer'] = $nearUser->get();
